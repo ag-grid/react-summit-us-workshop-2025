@@ -1,13 +1,13 @@
 import { AgCharts } from 'ag-charts-react';
 import { data } from './data.js';
 import 'ag-charts-enterprise';
+import type { IData } from './data.js';
 import type { AgChartOptions } from 'ag-charts-enterprise';
 
 export default function EnterpriseChart() {
   const options: AgChartOptions = {
-    data: data,
+    data: data as IData[],
     title: { text: `Global CO2 Emissions since 154AD` },
-    animation: { enabled: false },
     zoom: {
       enabled: true,
       axes: 'x',
@@ -26,8 +26,8 @@ export default function EnterpriseChart() {
     series: [
       {
         type: 'line',
-        xKey: 'Year AD',
-        yKey: 'CO2 spline (20 yr, ppm)',
+        xKey: 'year',
+        yKey: 'co2',
         marker: {
           enabled: false,
         },

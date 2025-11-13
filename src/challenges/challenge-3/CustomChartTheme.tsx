@@ -12,24 +12,9 @@ export default function CustomChartTheme(): JSX.Element {
     title: {
       text: 'CO2 Emissions vs GDP per Capita by Country',
     },
-    series: [
-      // TODO: Show a line chart for GDP per capita
-      {
-        type: 'line',
-      },
-      // TODO: Show a bar chart for CO2 emissions in 2023
-      {
-        type: 'bar',
-      },
-      // TODO: Show a bar chart for average CO2 emissions since 1920
-      {
-        type: 'bar',
-      },
-    ],
+    series: [],
     // TODO
     theme: {},
-    // TODO
-    axes: [],
   };
 
   return (
