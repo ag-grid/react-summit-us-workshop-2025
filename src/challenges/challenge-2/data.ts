@@ -1,5 +1,3 @@
-export const selectedCountries = new Set<string>();
-
 export type IData = {
   country: string;
   gdp2023: number;
@@ -7,7 +5,7 @@ export type IData = {
   selected?: boolean;
 };
 
-export const getData = (): IData[] => {
+export const getData = (selectedCountry: Set<string>): IData[] => {
   const countries = [
     { country: 'Canada', gdp2023: 54220.3285039875, population: 38781291 },
     { country: 'Germany', gdp2023: 53940.4073447462, population: 83294633 },
@@ -24,6 +22,6 @@ export const getData = (): IData[] => {
 
   return countries.map((item) => ({
     ...item,
-    selected: selectedCountries.has(item.country),
+    selected: selectedCountry.has(item.country),
   }));
 };
