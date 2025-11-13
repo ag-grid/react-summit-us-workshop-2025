@@ -36,7 +36,7 @@ An S&P 500 historical chart featuring:
 
 ### 1. AgFinancialCharts Component
 
-AG Charts provides a specialized component designed specifically for financial applications:
+AG Charts provides a specialized component designed specifically for financial applications. Unlike the standard `AgCharts` component, `AgFinancialCharts` is purpose-built for time-series financial data visualization.
 
 ```typescript
 import { AgFinancialCharts } from 'ag-charts-react';
@@ -45,63 +45,67 @@ import type { AgFinancialChartOptions } from 'ag-charts-enterprise';
 <AgFinancialCharts
   options={options}
   style={{ width: '100%', height: '100%' }}
-/>
+/>;
 ```
 
 **What makes it special**:
 
-- **Built-in toolbar**: Annotation tools, chart type selector, settings
-- **Financial series types**: Candlestick, OHLC, line, area
-- **Technical indicators**: Moving averages, Bollinger Bands, RSI, MACD, etc.
-- **Time-based navigation**: Pan and zoom optimized for time-series
-- **Professional styling**: Default appearance matches financial applications
-- **Annotation tools**: Draw directly on the chart
+- **Built-in toolbar**: Interactive tools for annotations, chart type switching, and settings without writing additional UI code
+- **Financial series types**: Candlestick, OHLC, line, and area charts optimized for financial data
+- **Technical indicators**: Built-in support for moving averages, Bollinger Bands, RSI, MACD, and more
+- **Time-based navigation**: Pan and zoom interactions optimized for time-series analysis
+- **Professional styling**: Default appearance matches Bloomberg, TradingView, and other financial platforms
+- **Annotation tools**: Draw callouts, lines, and comments directly on the chart via the toolbar
 
-This component significantly reduces the code needed for financial charts compared to building from scratch.
+This component significantly reduces the code needed for financial charts. What might take hundreds of lines of custom code is available out-of-the-box.
 
 [Learn more about Financial Charts in our documentation.](https://ag-grid.com/charts/react/financial-charts/)
 
 ### 2. Initial State Configuration
 
-Financial charts can be pre-configured with annotations via `initialState`:
+Financial charts support pre-configuration through the `initialState` property. This allows you to set up the chart exactly how you want it to appear when first loaded, rather than requiring users to add annotations manually.
 
 ```typescript
 const options: AgFinancialChartOptions = {
   data: getData(),
   initialState: {
     annotations: [
-      // Array of annotation objects
+      // Array of pre-configured annotation objects
     ],
-    chartType: 'line',  // or 'candlestick', 'ohlc'
+    chartType: 'line', // or 'candlestick', 'ohlc', 'area'
   },
 };
 ```
 
-Initial state allows you to:
+**What you can configure**:
 
-- Pre-populate annotations
-- Set default chart type
-- Configure default view settings
+- **Pre-populated annotations**: Historical events, support/resistance levels, notes
+- **Default chart type**: Start with line, candlestick, or OHLC view
+- **Default view settings**: Initial zoom level or time range
 
-Users can then add, modify, or delete annotations using the toolbar.
+Once the chart loads with this initial state, users can still add, modify, or delete annotations using the built-in toolbar. Think of `initialState` as providing a starting point that users can customize.
+
+[Learn more about Initial State in our documentation.](https://ag-grid.com/charts/react/initial-state/)
 
 ### 3. Understanding Annotations
 
-Annotations are visual markers that highlight specific points, regions, or events on a chart. They're essential for financial analysis to mark:
+Annotations are visual markers that overlay on top of chart data to provide context, highlight important events, or mark specific levels. In financial analysis, annotations are crucial for communicating insights and marking key moments in market history.
 
-- Significant market events
-- Support/resistance levels
-- Entry/exit points
-- Trend lines
-- Notes and observations
+**Common use cases**:
 
-AG Charts supports multiple annotation types, each serving different purposes.
+- **Significant market events**: Economic crises, political events, company earnings
+- **Support/resistance levels**: Horizontal lines at key price levels
+- **Entry/exit points**: Trade decisions and portfolio changes
+- **Trend lines**: Drawing patterns and technical formations
+- **Notes and observations**: Commentary on price action
+
+AG Charts supports multiple annotation types, each designed for specific purposes. In this challenge, you'll use callouts, comments, horizontal lines, vertical lines, and text labels to annotate major financial events on an S&P 500 chart.
 
 [Learn more about Annotations in our documentation.](https://ag-grid.com/charts/react/annotations/)
 
 ### 4. Callout Annotations
 
-Callouts draw arrows pointing from a text box to a specific point:
+Callouts are arrow-based annotations that point from a text label to a specific data point. They're ideal for highlighting significant events while keeping the label text away from the data point itself for better readability.
 
 ```typescript
 {
@@ -109,10 +113,10 @@ Callouts draw arrows pointing from a text box to a specific point:
   text: 'Significant Event',
   color: '#040404',        // Text color
   fill: '#ff9999',         // Background fill
-  fillOpacity: 0.6,        // Transparency
+  fillOpacity: 0.6,        // Transparency (0-1)
   stroke: '#F23645',       // Border color
   strokeOpacity: 1,        // Border transparency
-  strokeWidth: 2,          // Border width
+  strokeWidth: 2,          // Border width in pixels
   start: {
     x: { __type: 'date', value: new Date('2020-03-16').getTime() },
     y: 2386,  // Chart Y value where arrow points
@@ -124,16 +128,20 @@ Callouts draw arrows pointing from a text box to a specific point:
 }
 ```
 
-**Key properties**:
+**Understanding start vs. end**:
 
-- `start`: Where the arrow **points** (the data point)
-- `end`: Where the text box **appears**
-- Date values require `__type: 'date'` wrapper
-- Use `.getTime()` to convert Date to timestamp
+- **`start`**: Where the arrow **points to** (the actual event/data point you're annotating)
+- **`end`**: Where the text box **is positioned** (away from the data for clarity)
+
+The arrow automatically draws from the text box to the data point, creating a visual connection.
+
+**Date handling**: Financial charts use time-series data, so X-axis values must be wrapped in a special format:
+- Use `__type: 'date'` to indicate it's a date value
+- Use `.getTime()` to convert JavaScript Date objects to numeric timestamps
 
 ### 5. Comment Annotations
 
-Comments are markers placed at specific coordinates:
+Comments are compact markers positioned at exact coordinates on the chart. Unlike callouts which always display text, comments appear as small clickable icons that reveal their text when interacted with.
 
 ```typescript
 {
@@ -147,13 +155,20 @@ Comments are markers placed at specific coordinates:
 }
 ```
 
-Comments appear as small icons that users can click to read the text. They're less visually intrusive than callouts.
+**When to use comments vs. callouts**:
+
+- **Comments**: When you have many annotations and want to avoid visual clutter. Users click to reveal details.
+- **Callouts**: When you want immediate visibility of important events without requiring interaction.
+
+Comments are perfect for marking specific price levels or dates where you want to add contextual information that's available on-demand rather than always visible.
 
 ### 6. Line Annotations
 
+Line annotations draw straight lines across the chart to mark important levels or dates. They come in two flavors: vertical (marking time) and horizontal (marking price/value).
+
 #### Vertical Lines
 
-Mark specific dates/times:
+Vertical lines mark specific dates or times on the X-axis. They're useful for highlighting when an event occurred without specifying what price level it affected.
 
 ```typescript
 {
@@ -165,9 +180,11 @@ Mark specific dates/times:
 }
 ```
 
+**Common uses**: Earnings dates, economic data releases, political events, market open/close times.
+
 #### Horizontal Lines
 
-Mark specific price/value levels:
+Horizontal lines mark specific price or value levels on the Y-axis. They're fundamental tools in technical analysis.
 
 ```typescript
 {
@@ -177,21 +194,23 @@ Mark specific price/value levels:
   strokeWidth: 1,
   lineStyle: 'dotted',
   axisLabel: {
-    fill: '#089981',       // Label background color
+    fill: '#089981',       // Label background color on the axis
   },
 }
 ```
 
-Horizontal lines are useful for:
+**Common uses for horizontal lines**:
 
-- Support/resistance levels
-- Average prices
-- Target prices
-- Stop-loss levels
+- **Support/resistance levels**: Historical price levels where buying/selling pressure occurred
+- **Average prices**: Moving averages, VWAP, or custom average calculations
+- **Target prices**: Analyst price targets or trading goals
+- **Stop-loss levels**: Risk management exit points
+
+The `axisLabel` property adds a label on the Y-axis showing the exact value of the line, making it easy to read the price level at a glance.
 
 ### 7. Text Annotations
 
-Free-form text labels positioned anywhere:
+Text annotations are simple labels placed directly on the chart without any background, border, or connecting lines. They're the most minimalist annotation type.
 
 ```typescript
 {
@@ -207,212 +226,194 @@ Free-form text labels positioned anywhere:
 }
 ```
 
-Text annotations are simple labels without backgrounds or borders.
+**When to use text annotations**:
+
+- Labeling chart regions or patterns (e.g., "Bull Market", "Consolidation Phase")
+- Adding brief notes directly on the chart
+- Marking trends or channels
+- Situations where a full callout would be too visually heavy
+
+Text annotations work best when placed in open areas of the chart where they won't overlap with data points or other annotations.
 
 ### 8. Date Handling in Annotations
 
-Financial charts use time-series data, so X-axis values are dates. Annotations require a special format:
+Financial charts plot data over time, which means the X-axis represents dates. When positioning annotations on the X-axis, you need to use a specific format to ensure AG Charts interprets your values correctly.
 
 ```typescript
-// Convert date string to timestamp
-const timestamp = new Date('2020-03-16').getTime();
+// Step 1: Create a Date object
+const eventDate = new Date('2020-03-16');
 
-// Use in annotation with __type wrapper
+// Step 2: Convert to timestamp using .getTime()
+const timestamp = eventDate.getTime();
+
+// Step 3: Use in annotation with __type wrapper
 x: {
   __type: 'date',
   value: timestamp,
 }
 ```
 
-**Why this format?**
+**Why this three-step process?**
 
-- The `__type: 'date'` tells AG Charts to interpret the value as a date
-- `.getTime()` converts the Date object to a numeric timestamp
-- This ensures proper positioning on the time axis
+1. **`new Date('2020-03-16')`**: Creates a JavaScript Date object from a date string
+2. **`.getTime()`**: Converts the Date to a numeric timestamp (milliseconds since January 1, 1970)
+3. **`__type: 'date'`**: Tells AG Charts "this number is a timestamp, treat it as a date on the time axis"
 
-### 9. Annotation Styling
+Without `__type: 'date'`, AG Charts would interpret the value as a raw number and position it incorrectly on the axis.
 
-Annotations support various styling properties:
+**Shorthand version**: You can combine steps 1 and 2 inline:
 
 ```typescript
-{
-  // Text styling
-  color: '#040404',          // Text color
-  fontSize: 14,
-  fontWeight: 'bold',
-
-  // Background
-  fill: '#ff9999',           // Background color
-  fillOpacity: 0.6,          // 0 (transparent) to 1 (opaque)
-
-  // Border
-  stroke: '#F23645',         // Border color
-  strokeOpacity: 1,
-  strokeWidth: 2,
-
-  // Line style (for line annotations)
-  lineStyle: 'dashed',       // 'solid', 'dashed', 'dotted'
+x: {
+  __type: 'date',
+  value: new Date('2020-03-16').getTime(),
 }
 ```
 
-**Color conventions in finance**:
+This pattern is used for all date-based positioning in annotations (callouts, comments, text, vertical lines).
 
-- **Red** (#F23645): Negative events, losses, bear markets
-- **Green** (#089981): Positive events, gains, bull markets
-- **Gray** (#6c757d): Neutral events, annotations
-- **Transparency**: Use `fillOpacity` 0.5-0.7 for overlays
+### 9. Annotation Styling and Color Conventions
+
+Annotations support extensive styling properties to match your brand or follow financial market conventions:
+
+```typescript
+color: '#040404',        // Text color
+fill: '#ff9999',         // Background fill
+fillOpacity: 0.6,        // Transparency (0 = invisible, 1 = solid)
+stroke: '#F23645',       // Border/line color
+strokeOpacity: 1,        // Border transparency
+strokeWidth: 2,          // Border thickness in pixels
+lineStyle: 'dashed',     // Line pattern: 'solid', 'dashed', 'dotted'
+fontSize: 14,            // Text size in pixels
+```
+
+**Financial color conventions**:
+
+The financial industry has established color patterns that users instinctively understand:
+
+- **Red** (`#F23645`): Negative events, market crashes, bear markets, losses
+- **Green** (`#089981`): Positive events, recoveries, bull markets, gains
+- **Gray/Black** (`#6c757d`, `#040404`): Neutral events, informational markers
+
+**Transparency tips**:
+
+- Use `fillOpacity` between 0.5-0.7 for callout backgrounds to avoid completely obscuring chart data
+- Set `strokeOpacity` to 1 for clear borders that define annotation boundaries
+- Lower transparency on overlapping annotations to prevent visual confusion
+
+### 10. Range Buttons Configuration
+
+Financial charts often need quick time-range selection. Range buttons allow users to instantly zoom to common periods like "1 Month", "1 Year", or "All Time" with a single click.
+
+```typescript
+const MONTH = 30 * 24 * 60 * 60 * 1000;  // Milliseconds in ~30 days
+
+theme: {
+  overrides: {
+    common: {
+      ranges: {
+        enabled: true,
+        buttons: [
+          { label: '1M', value: 1 * MONTH },
+          { label: '6M', value: 6 * MONTH },
+          { label: '1Y', value: 12 * MONTH },
+          { label: '5Y', value: 60 * MONTH },
+          { label: 'All', value: (start, end) => [start, end] },
+        ],
+      },
+    },
+  },
+}
+```
+
+**How it works**:
+
+- `label`: Text displayed on the button
+- `value`: Either a number (milliseconds from the end of data) or a function returning `[start, end]` timestamps
+- Buttons appear in the chart toolbar and instantly adjust the visible range when clicked
+
+The `MONTH` constant simplifies calculations. Since months vary in length, we use 30 days as an approximation.
+
 
 ## Data Structure
 
-The data is provided in `sp500.ts`:
+The data is provided by the `getData()` function in `data.ts`:
 
 ```typescript
 interface FinancialDataPoint {
-  date: Date;        // Trading date
-  close: number;     // Closing price
-  open?: number;     // Opening price (for candlestick)
-  high?: number;     // High price (for candlestick)
-  low?: number;      // Low price (for candlestick)
-  volume?: number;   // Trading volume
+  date: Date; // Trading date
+  close: number; // Closing price
+  open?: number; // Opening price (for candlestick charts)
+  high?: number; // High price (for candlestick charts)
+  low?: number; // Low price (for candlestick charts)
+  volume?: number; // Trading volume
 }
 
-// Example data
+// Example: S&P 500 historical data
 [
-  { date: Date('2000-01-03'), close: 1455.22 },
-  { date: Date('2000-01-04'), close: 1399.42 },
-  // ... historical S&P 500 data
+  { date: new Date('2000-01-03'), close: 1455.22 },
+  { date: new Date('2000-01-04'), close: 1399.42 },
+  { date: new Date('2000-01-05'), close: 1402.11 },
+  // ... thousands more data points
 ]
 ```
 
-The `getData()` function returns S&P 500 historical data from 1990 to present.
+The `getData()` function returns S&P 500 historical price data from 1990 to present, providing over 30 years of market data including several major financial crises perfect for annotation practice.
+
+## Historical Events Reference
+
+For this challenge, you'll annotate major financial events from recent market history. Here are the key events to mark:
+
+### Global Financial Crisis (2008)
+
+**September 16, 2008**: The collapse of Lehman Brothers and subsequent financial crisis marked one of the most significant market events in modern history. Use a vertical line to mark this critical date.
+
+### COVID-19 Pandemic (2020)
+
+**February 7, 2020**: The beginning of the COVID-19 market crash as pandemic fears spread globally. Mark this pivotal moment with a vertical line.
+
+**Quantitative Easing Recovery (2020-2021)**: The unprecedented monetary stimulus from central banks drove a rapid market recovery. Use an arrow annotation to show the upward trajectory from mid-2020 through late 2021.
+
+### Long-term Recovery Trend (2009-2018)
+
+**Steady Recovery Growth (2009-2018)**: Following the 2008 crisis, markets entered a prolonged bull market with steady growth. Use a parallel channel annotation to visualize this trend period from early 2009 through late 2018.
+
+These annotations demonstrate different types: vertical lines for specific events, arrows for directional movements, and parallel channels for trend periods.
 
 ## Implementation Steps
 
 1. **Import Required Modules**
 
-   - Import the specialized financial charts component
-   - Import the enterprise package and necessary types
-   - Import the S&P 500 historical data
+   - Import `AgFinancialCharts` component from `'ag-charts-react'`
+   - Import type definitions: `AgFinancialChartOptions` and `AgAnnotation`
+   - Import the enterprise package with `'ag-charts-enterprise'`
+   - Import the `getData` function to load S&P 500 historical data
 
-2. **Set Up Chart Options**
+2. **Define Time Constants**
 
-   - Create a financial chart options object
-   - Load the S&P 500 data into the chart
+   - Create a `MONTH` constant representing ~30 days in milliseconds
+   - This will be used for range button calculations
 
-3. **Configure Initial State with Annotations**
+3. **Create Annotations Array**
 
-   - Define an initial state object to pre-populate annotations
-   - Create an annotations array to hold all event markers
+   - Define a constant array typed as `AgAnnotation[]`
+   - Create four annotations for the historical events:
+     - Vertical line for Global Financial Crisis (September 2008)
+     - Vertical line for COVID-19 (February 2020)
+     - Arrow for Quantitative Easing recovery trend
+     - Parallel channel for steady recovery growth (2009-2018)
 
-4. **Add Annotations for Historical Market Events**
+4. **Configure Chart Options**
 
-   Create annotations marking significant events in market history. Consider using different annotation types for variety:
+   - Load data using `getData()`
+   - Add a descriptive title
+   - Configure `initialState` with your annotations array
+   - Set up theme with range buttons (1M, 6M, 1Y, 5Y, All) for time period selection
 
-   **Dotcom Bubble Peak (March 24, 2000)** - Price level: ~1527
-
-   - Use a callout to point to the peak with explanatory text
-   - Apply bearish (red) styling
-
-   **9/11 Attacks (September 11, 2001)** - Price level: ~1092
-
-   - Mark the date with a comment annotation
-   - Add a vertical line for visual emphasis
-
-   **Global Financial Crisis (September 15, 2008)** - Price level: ~1251
-
-   - Use a callout annotation to highlight the crash start
-   - Position text appropriately relative to the data point
-
-   **Market Bottom - GFC (March 9, 2009)** - Price level: ~676
-
-   - Add a comment marker at the lowest point
-   - Include a horizontal reference line at this support level
-   - Use bullish (green) styling to indicate the recovery ahead
-
-   **COVID-19 Crash (March 16, 2020)** - Price level: ~2386
-
-   - Create a callout annotation for the crash
-   - Add a vertical line marking the bottom (March 23, 2020)
-
-   **Recovery Rally (November 2020)** - Price level: ~3500
-
-   - Use a simple text annotation to label the rally period
-
-   **2022 Bear Market (June 16, 2022)** - Price level: ~3666
-
-   - Add a comment marker at the low point
-   - Include a vertical line for reference
-
-5. **Render the Financial Chart Component**
-   - Use the specialized financial charts component
-   - Pass your configured options
-   - Set appropriate dimensions for the container
-
-## Documentation References
-
-- [AG Charts Financial Charts](https://ag-grid.com/charts/react/financial-charts/)
-- [AG Charts Annotations](https://ag-grid.com/charts/react/annotations/)
-- [AG Charts Annotation Types](https://ag-grid.com/charts/react/annotations-types/)
-- [AG Charts Initial State](https://ag-grid.com/charts/react/initial-state/)
-
-## Success Criteria
-
-Your financial chart should:
-
-- Display S&P 500 historical data from 1990-present
-- Show all configured annotations:
-  - Multiple callout boxes with arrows pointing to events
-  - Comment markers at key data points
-  - Vertical lines marking significant dates
-  - Horizontal line marking key price level
-  - Text label for recovery period
-- Display interactive toolbar at top of chart
-- Support adding new annotations via toolbar
-- Show proper colors and styling for each annotation type
-- Position annotations accurately on dates and price values
-- Allow users to interact with (click, edit, delete) annotations
-
-## Interactive Features
-
-The financial chart toolbar includes:
-
-- **Annotation Tools**: Draw callouts, comments, lines, text
-- **Chart Types**: Switch between line, candlestick, OHLC
-- **Zoom/Pan**: Navigate through time periods
-- **Crosshair**: Precise value reading
-- **Settings**: Customize appearance and behavior
-- **Export**: Download chart as image
-
-Users can add their own annotations using the toolbar tools.
-
-## Tips
-
-- This component requires much less code than previous challenges - most features are built-in
-- All annotations go in the `initialState.annotations` array
-- Use `.getTime()` to convert Date objects to timestamps for date values
-- The `__type: 'date'` wrapper is **required** for X-axis positioning
-- Callout `start` is where the arrow **points**, `end` is where the text box **appears**
-- Use financial color conventions: red for bearish, green for bullish
-- Test by checking if annotations appear at correct dates and price levels
-- The toolbar provides interactive tools for users to add their own annotations
-- Line styles: `'solid'`, `'dashed'`, `'dotted'`
-- Comment markers appear as small clickable icons
-- You can mix multiple annotation types to create rich visual context
-- Transparency (fillOpacity 0.6-0.7) helps annotations not completely obscure data
-- If annotations don't appear, check console for date format errors
-
-## Annotation Events Reference
-
-Major financial events to annotate (approximate values):
-
-1. **Dotcom Bubble Peak** - March 24, 2000 (S&P ~1527)
-2. **9/11 Attacks** - September 11, 2001 (S&P ~1092)
-3. **Global Financial Crisis** - September 15, 2008 (S&P ~1251)
-4. **Market Bottom (GFC)** - March 9, 2009 (S&P ~676)
-5. **COVID-19 Crash** - March 16, 2020 (S&P ~2386)
-6. **COVID Market Bottom** - March 23, 2020 (S&P ~2237)
-7. **Recovery Rally** - November 2020 (S&P ~3500)
-8. **2022 Bear Market Low** - June 16, 2022 (S&P ~3666)
+5. **Render Component**
+   - Return the `AgFinancialCharts` component
+   - Pass the chart options
+   - Set dimensions using style prop
 
 ## Code Snippets
 
@@ -420,17 +421,41 @@ Major financial events to annotate (approximate values):
 
 ```typescript
 import { AgFinancialCharts } from 'ag-charts-react';
-import type { AgFinancialChartOptions } from 'ag-charts-enterprise';
+import type {
+  AgAnnotation,
+  AgFinancialChartOptions,
+} from 'ag-charts-enterprise';
 import 'ag-charts-enterprise';
-import { getData } from './sp500.js';
+import { getData } from './data.ts';
+
+const chartAnnotations = [
+  // Your annotation objects here
+] as AgAnnotation[];
+
+const MONTH = 30 * 24 * 60 * 60 * 1000;
 
 export default function FinancialChart() {
   const options: AgFinancialChartOptions = {
     data: getData(),
+    title: { text: 'S&P 500 Historical Prices with Annotations' },
     initialState: {
-      annotations: [
-        // Your annotations here
-      ],
+      annotations: chartAnnotations,
+    },
+    theme: {
+      overrides: {
+        common: {
+          ranges: {
+            enabled: true,
+            buttons: [
+              { label: '1M', value: 1 * MONTH },
+              { label: '6M', value: 6 * MONTH },
+              { label: '1Y', value: 12 * MONTH },
+              { label: '5Y', value: 60 * MONTH },
+              { label: 'All', value: (start, end) => [start, end] },
+            ],
+          },
+        },
+      },
     },
   };
 
@@ -443,103 +468,163 @@ export default function FinancialChart() {
 }
 ```
 
-### Example Callout Annotation
-
-```typescript
-{
-  type: 'callout',
-  text: 'Global Financial Crisis',
-  color: '#040404',
-  fill: '#ff6666',
-  fillOpacity: 0.7,
-  stroke: '#F23645',
-  strokeOpacity: 1,
-  strokeWidth: 2,
-  start: {
-    x: {
-      __type: 'date',
-      value: new Date('2008-09-15').getTime(),
-    },
-    y: 1251,  // Price where arrow points
-  },
-  end: {
-    x: {
-      __type: 'date',
-      value: new Date('2007-10-01').getTime(),
-    },
-    y: 1450,  // Price where text box appears
-  },
-}
-```
-
-### Example Comment with Horizontal Line
-
-```typescript
-// Comment marker
-{
-  type: 'comment',
-  text: 'Market Bottom',
-  x: {
-    __type: 'date',
-    value: new Date('2009-03-09').getTime(),
-  },
-  y: 676,
-},
-
-// Horizontal reference line at same level
-{
-  type: 'horizontal-line',
-  value: 676,
-  stroke: '#089981',
-  strokeWidth: 1,
-  lineStyle: 'dotted',
-  axisLabel: {
-    fill: '#089981',
-  },
-}
-```
-
-### Example Vertical Line
+### Example Vertical Line Annotation
 
 ```typescript
 {
   type: 'vertical-line',
-  value: new Date('2001-09-11').getTime(),
-  stroke: '#F23645',
+  text: {
+    label: 'Global Financial Crisis',
+    position: 'top',
+    alignment: 'center',
+    fontSize: 14,
+    fontFamily: 'Verdana, sans-serif',
+    color: '#dc5050',
+  },
+  value: {
+    __type: 'date',
+    value: new Date('2008-09-16').toISOString(),
+  },
+  stroke: '#dc5057',
+  strokeOpacity: 1,
   strokeWidth: 1,
   lineStyle: 'dashed',
+  axisLabel: {
+    enabled: true,
+    stroke: '#dc5057',
+    fill: '#dc5057',
+    color: 'white',
+  },
 }
 ```
 
-### Example Text Annotation
+### Example Arrow Annotation
 
 ```typescript
 {
-  type: 'text',
-  text: 'Recovery Rally',
-  x: {
-    __type: 'date',
-    value: new Date('2020-11-01').getTime(),
+  type: 'arrow',
+  text: {
+    label: 'Quantitative Easing',
+    position: 'center',
+    alignment: 'center',
+    fontSize: 12,
+    fontFamily: 'Verdana, sans-serif',
+    color: '#128f42',
   },
-  y: 3500,
-  fontSize: 14,
-  color: '#333',
+  stroke: '#128f42',
+  strokeOpacity: 1,
+  strokeWidth: 1,
+  lineStyle: 'dashed',
+  start: {
+    x: {
+      __type: 'date',
+      value: new Date('2020-07-23').toISOString(),
+    },
+    y: 2602.63,  // Starting Y value
+  },
+  end: {
+    x: {
+      __type: 'date',
+      value: new Date('2021-10-28').toISOString(),
+    },
+    y: 4171.59,  // Ending Y value
+  },
 }
 ```
 
-### Date Handling
+### Example Parallel Channel Annotation
 
 ```typescript
-// Convert date string to timestamp
-const timestamp = new Date('2020-03-16').getTime();
-
-// Use in annotation
 {
-  type: 'comment',
-  x: {
-    __type: 'date',
-    value: timestamp,
+  type: 'parallel-channel',
+  height: 661.74,  // Channel height
+  text: {
+    label: 'Steady Recovery Growth',
+    position: 'top',
+    alignment: 'center',
+    fontSize: 14,
+    fontFamily: 'Verdana, sans-serif',
+    color: '#d6b72e',
   },
-  y: 2386,
+  background: {
+    fill: '#d6b72e',
+    fillOpacity: 0.2,
+  },
+  start: {
+    x: {
+      __type: 'date',
+      value: new Date('2009-02-23').toISOString(),
+    },
+    y: 1268.47,
+  },
+  end: {
+    x: {
+      __type: 'date',
+      value: new Date('2018-12-24').toISOString(),
+    },
+    y: 2997.54,
+  },
+  stroke: '#d6b72e',
+  strokeOpacity: 1,
+  strokeWidth: 1,
+  lineStyle: 'dashed',
+  middle: {
+    strokeWidth: 1,
+    lineDash: [6, 5],
+  },
 }
 ```
+
+
+## Documentation References
+
+- [AG Charts Financial Charts](https://ag-grid.com/charts/react/financial-charts/)
+- [AG Charts Annotations](https://ag-grid.com/charts/react/annotations/)
+- [AG Charts Annotation Types](https://ag-grid.com/charts/react/annotations-types/)
+- [AG Charts Initial State](https://ag-grid.com/charts/react/initial-state/)
+
+## Success Criteria
+
+Your financial chart should display:
+
+- S&P 500 historical price data with a descriptive chart title
+- Pre-configured annotations for all major events:
+  - **Vertical Line**: Global Financial Crisis (September 16, 2008) with red styling
+  - **Vertical Line**: COVID-19 Pandemic (February 7, 2020) with purple styling
+  - **Arrow**: Quantitative Easing recovery trend (2020-2021) with green styling
+  - **Parallel Channel**: Steady Recovery Growth (2009-2018) with yellow/gold styling
+- Interactive toolbar with annotation tools at the top of the chart
+- Custom range selector buttons: 1M, 6M, 1Y, 5Y, All
+- Proper styling with appropriate colors for each annotation type
+- Accurate positioning of all annotations on correct dates and price levels
+- Full interactivity: users can add, edit, move, and delete annotations via the toolbar
+
+## Interaction Guide
+
+Users should be able to:
+
+1. **View Annotations**: See pre-configured historical event markers on chart load
+2. **Add Annotations**: Use toolbar buttons to draw new vertical lines, arrows, parallel channels, and more
+3. **Edit Annotations**: Click existing annotations to modify text, colors, and positions
+4. **Navigate Time**: Click range buttons (1M, 6M, 1Y, 5Y, All) to zoom to specific periods
+5. **Switch Chart Types**: Toggle between line, candlestick, and OHLC views via the toolbar
+6. **Zoom/Pan**: Drag to pan, scroll to zoom for detailed analysis
+7. **Context Menu**: Right-click for additional chart options
+
+## Tips
+
+- Define all annotations in a separate constant array outside the component for better organization
+- Type the annotations array as `AgAnnotation[]` for TypeScript safety and autocomplete
+- Use `new Date('YYYY-MM-DD').toISOString()` for date values in annotations with `__type: 'date'`
+- For arrows and parallel channels, `start` is the beginning point and `end` is the terminal point
+- Each annotation type has different required properties - vertical lines need `value`, arrows need `start` and `end`
+- Use `fillOpacity` between 0.1-0.3 for background overlays like parallel channels to keep data visible
+- Line styles are `'solid'`, `'dashed'`, or `'dotted'` - dashed works well for event markers
+- Vertical lines are perfect for marking specific dates/events without cluttering the chart
+- Arrows effectively show directional movement or trends over a period
+- Parallel channels are ideal for visualizing long-term trends with upper and lower bounds
+- The `MONTH` constant helps calculate range button values: `1 * MONTH`, `12 * MONTH`, etc.
+- Test your annotations by using the range buttons to navigate to different time periods
+- The toolbar allows users to draw their own annotations interactively - your code provides a starting point
+- You can customize fonts, colors, and styling for each annotation independently
+- The `middle` property on parallel channels can add a center line with custom styling
