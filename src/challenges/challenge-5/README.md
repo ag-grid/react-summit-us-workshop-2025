@@ -16,19 +16,17 @@ Create an interactive world map with geographic data visualization using map-sha
 
 ## Chart Type
 
-**Map Chart** with choropleth (heatmap) visualization
+**Map Chart** with choropleth (heatmap) and bubble visualizations
 
 ## What You'll Build
 
 An interactive world map featuring:
 
-- Countries colored by GDP per capita (choropleth heatmap)
+- Countries colored by GDP per capita (heatmap)
 - Population bubbles (map markers) sized by population
-- Click-to-select functionality
 - Hover highlighting
 - Custom tooltips showing GDP and population
 - Gradient legend showing data range
-- Country labels
 - Zoom and pan capabilities
 - Automatic color scaling
 
@@ -44,7 +42,7 @@ Map charts visualize geospatial data by coloring, sizing, or otherwise styling g
 
 AG Charts Enterprise includes powerful map visualization capabilities that work with standard GeoJSON data.
 
-[Learn more about Map Series in our documentation.](https://ag-grid.com/charts/react/map-series/)
+[Learn more about Map Series in our documentation.](https://ag-grid.com/charts/react/maps/)
 
 ### 2. Map-Shape Series
 
@@ -55,9 +53,9 @@ series: [
   {
     type: 'map-shape',
     idKey: 'code', // Key in your data
-    topologyIdKey: 'iso_a3', // Key in GeoJSON topology
+    topologyIdKey: 'code', // Key in GeoJSON topology
     colorKey: 'value', // Value to map to color
-    colorName: 'Population', // Display name in legend
+    colorName: 'valueName', // Display name in legend
   },
 ];
 ```
@@ -71,7 +69,7 @@ series: [
 
 These keys link your data to the geographic shapes in the topology.
 
-[Learn more about Map Shape Series in our documentation.](https://ag-grid.com/charts/react/map-shape-series/)
+[Learn more about Map Shape Series in our documentation.](https://ag-grid.com/charts/react/map-shapes/)
 
 ### 3. GeoJSON Topology
 
@@ -116,23 +114,21 @@ Your data must have an identifier field that matches identifiers in the topology
 ```typescript
 // Your data
 const data = [
-  { iso3: 'USA', gdp: 59500 },
-  { iso3: 'GBR', gdp: 45000 },
-  { iso3: 'JPN', gdp: 39300 },
+  { country: 'USA', gdp: 59500 },
+  { country: 'GBR', gdp: 45000 },
+  { country: 'JPN', gdp: 39300 },
 ];
 
 // Series configuration
 series: [
   {
     type: 'map-shape',
-    idKey: 'iso3', // Field in your data
-    topologyIdKey: 'iso3', // Field in topology.properties
+    idKey: 'country', // Field in your data
+    topologyIdKey: 'country', // Field in topology.properties
     colorKey: 'gdp',
   },
 ];
 ```
-
-Both must use the same identifier system (e.g., ISO 3166-1 alpha-3 country codes).
 
 ### 5. Color Mapping (Choropleth)
 
@@ -142,7 +138,7 @@ AG Charts automatically creates a color scale from your data values:
 series: [
   {
     type: 'map-shape',
-    colorKey: 'gdpPerCapita', // Numeric field
+    colorKey: 'country', // Numeric field
     colorName: 'GDP per Capita', // Legend label
     colorRange: ['#e5f5f9', '#2ca25f'], // Optional: custom colors
   },
@@ -168,7 +164,6 @@ gradientLegend: {
   position: 'bottom',  // 'top', 'right', 'bottom', 'left'
   gradient: {
     preferredLength: 400,  // Length in pixels
-    thickness: 12,         // Height/width in pixels
   },
   scale: {
     label: {
@@ -185,32 +180,7 @@ The gradient legend:
 - Updates automatically when data changes
 - Can be positioned on any side of the chart
 
-[Learn more about Gradient Legend in our documentation.](https://ag-grid.com/charts/react/gradient-legend/)
-
-### 7. Map Labels
-
-Labels display text within or on geographic regions:
-
-```typescript
-series: [
-  {
-    type: 'map-shape',
-    label: {
-      enabled: true,
-      fontSize: 9,
-      color: '#333',
-    },
-  },
-];
-```
-
-By default, labels show the region identifier (e.g., country code). AG Charts automatically:
-
-- Positions labels within shapes
-- Hides labels that don't fit
-- Adjusts label size for readability
-
-### 8. Map Highlighting
+### 7. Map Highlighting
 
 Highlighting provides visual feedback on hover and selection:
 
@@ -241,8 +211,8 @@ Add markers/bubbles to show additional data dimensions:
 ```typescript
 {
   type: 'map-marker',
-  idKey: 'iso3',
-  topologyIdKey: 'iso3',
+  idKey: 'country',
+  topologyIdKey: 'country',
   sizeKey: 'population',  // Field for bubble size
   sizeName: 'Population',
   maxSize: 30,            // Maximum bubble radius
