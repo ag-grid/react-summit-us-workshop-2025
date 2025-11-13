@@ -22,9 +22,11 @@ Create an interactive world map with geographic data visualization using map-sha
 
 An interactive world map featuring:
 
-- Countries colored by GDP per capita (heatmap)
+- Countries colored by GDP per capita (choropleth heatmap)
+- Population bubbles (map markers) sized by population
 - Click-to-select functionality
 - Hover highlighting
+- Custom tooltips showing GDP and population
 - Gradient legend showing data range
 - Country labels
 - Zoom and pan capabilities
@@ -52,12 +54,12 @@ The `map-shape` series type renders geographic regions (countries, states, count
 series: [
   {
     type: 'map-shape',
-    idKey: 'code',              // Key in your data
-    topologyIdKey: 'iso_a3',    // Key in GeoJSON topology
-    colorKey: 'value',          // Value to map to color
-    colorName: 'Population',    // Display name in legend
-  }
-]
+    idKey: 'code', // Key in your data
+    topologyIdKey: 'iso_a3', // Key in GeoJSON topology
+    colorKey: 'value', // Value to map to color
+    colorName: 'Population', // Display name in legend
+  },
+];
 ```
 
 **Key properties**:
@@ -97,9 +99,11 @@ AG Charts accepts GeoJSON topologies that define the shapes of geographic region
 import { topology } from './topology.js';
 
 const chartOptions: AgChartOptions = {
-  topology,  // GeoJSON with geographic shapes
-  data,      // Your data values
-  series: [/* map-shape series */]
+  topology, // GeoJSON with geographic shapes
+  data, // Your data values
+  series: [
+    /* map-shape series */
+  ],
 };
 ```
 
@@ -118,12 +122,14 @@ const data = [
 ];
 
 // Series configuration
-series: [{
-  type: 'map-shape',
-  idKey: 'iso3',           // Field in your data
-  topologyIdKey: 'iso3',   // Field in topology.properties
-  colorKey: 'gdp',
-}]
+series: [
+  {
+    type: 'map-shape',
+    idKey: 'iso3', // Field in your data
+    topologyIdKey: 'iso3', // Field in topology.properties
+    colorKey: 'gdp',
+  },
+];
 ```
 
 Both must use the same identifier system (e.g., ISO 3166-1 alpha-3 country codes).
@@ -133,12 +139,14 @@ Both must use the same identifier system (e.g., ISO 3166-1 alpha-3 country codes
 AG Charts automatically creates a color scale from your data values:
 
 ```typescript
-series: [{
-  type: 'map-shape',
-  colorKey: 'gdpPerCapita',       // Numeric field
-  colorName: 'GDP per Capita',    // Legend label
-  colorRange: ['#e5f5f9', '#2ca25f'],  // Optional: custom colors
-}]
+series: [
+  {
+    type: 'map-shape',
+    colorKey: 'gdpPerCapita', // Numeric field
+    colorName: 'GDP per Capita', // Legend label
+    colorRange: ['#e5f5f9', '#2ca25f'], // Optional: custom colors
+  },
+];
 ```
 
 **How it works**:
@@ -184,14 +192,16 @@ The gradient legend:
 Labels display text within or on geographic regions:
 
 ```typescript
-series: [{
-  type: 'map-shape',
-  label: {
-    enabled: true,
-    fontSize: 9,
-    color: '#333',
+series: [
+  {
+    type: 'map-shape',
+    label: {
+      enabled: true,
+      fontSize: 9,
+      color: '#333',
+    },
   },
-}]
+];
 ```
 
 By default, labels show the region identifier (e.g., country code). AG Charts automatically:
@@ -205,15 +215,17 @@ By default, labels show the region identifier (e.g., country code). AG Charts au
 Highlighting provides visual feedback on hover and selection:
 
 ```typescript
-series: [{
-  type: 'map-shape',
-  highlight: {
-    highlightedItem: {
-      strokeWidth: 3,        // Thicker border on hover
-      fillOpacity: 0.9,      // Slightly opaque on hover
+series: [
+  {
+    type: 'map-shape',
+    highlight: {
+      highlightedItem: {
+        strokeWidth: 3, // Thicker border on hover
+        fillOpacity: 0.9, // Slightly opaque on hover
+      },
     },
   },
-}]
+];
 ```
 
 Highlighting helps users:
@@ -222,9 +234,42 @@ Highlighting helps users:
 - Identify selected regions
 - Understand interactive elements
 
-### 9. Map Zoom and Pan
+### 8. Map Markers (Bubbles)
 
-Enable interactive navigation:
+Add markers/bubbles to show additional data dimensions:
+
+```typescript
+{
+  type: 'map-marker',
+  idKey: 'iso3',
+  topologyIdKey: 'iso3',
+  sizeKey: 'population',  // Field for bubble size
+  sizeName: 'Population',
+  maxSize: 30,            // Maximum bubble radius
+  strokeWidth: 1,
+}
+```
+
+Map markers create bubbles positioned at country centers, sized by a data field. This allows dual encoding: color for one metric, size for another.
+
+### 9. Custom Tooltips
+
+Format tooltip data with a renderer function:
+
+```typescript
+tooltip: {
+  renderer: ({ datum }) => ({
+    data: [
+      { label: 'GDP', value: `$${formatNumber(datum.gdp_md)}` },
+      { label: 'Population', value: formatNumber(datum.pop_est) },
+    ],
+  }),
+}
+```
+
+### 10. Map Zoom
+
+Enable interactive zooming:
 
 ```typescript
 zoom: {
@@ -249,9 +294,10 @@ The data is provided in `data.ts`:
 
 ```typescript
 interface CountryData {
-  iso3: string;      // ISO 3166-1 alpha-3 code (e.g., 'USA', 'GBR')
-  gdp_md: number;    // GDP per capita in USD
-  name?: string;     // Country name (optional)
+  iso3: string; // ISO 3166-1 alpha-3 code (e.g., 'USA', 'GBR')
+  gdp_md: number; // GDP per capita in USD
+  pop_est: number; // Population estimate
+  name?: string; // Country name (optional)
 }
 
 // Example data
@@ -259,10 +305,14 @@ interface CountryData {
   { iso3: 'USA', gdp_md: 76329.5, name: 'United States' },
   { iso3: 'GBR', gdp_md: 45850.0, name: 'United Kingdom' },
   { iso3: 'CHN', gdp_md: 12720.0, name: 'China' },
-]
+];
 ```
 
-The `iso3` field matches the `iso3` property in the topology file.
+The `iso3` field must match identifiers in the topology file.
+
+## Utility Functions
+
+A `formatNumber` utility is provided in `utils.js` to format large numbers for display in tooltips.
 
 ## Topology Structure
 
@@ -293,110 +343,45 @@ The topology file contains GeoJSON data with country boundaries:
 1. **Import Required Modules**
 
    - Import the enterprise package for map features
-   - Import the chart component and types needed
-   - Import the topology data (GeoJSON) and country GDP data
+   - Import chart component and types
+   - Import topology data (GeoJSON) and country data
+   - Import the utility function for number formatting
 
 2. **Configure Chart Metadata**
 
    - Add a descriptive title for the map visualization
-   - Include a subtitle with instructions or context for users
+   - Include a subtitle with instructions for users
 
 3. **Provide Data and Geographic Shapes**
 
    - Supply the country data array to the chart
    - Supply the GeoJSON topology defining country boundaries
 
-4. **Configure Map-Shape Series**
+4. **Configure Map-Shape Series (Colored Countries)**
 
-   - Define a map-shape series type
-   - Link your data to the topology using matching identifier fields
-   - Specify which numeric field should drive the color scale
-   - Provide a display name for the legend
+   - Define a map-shape series type for the choropleth
+   - Link your data to the topology using ISO3 identifiers
+   - Specify GDP field for color mapping
+   - Enable country labels with appropriate font size
+   - Configure hover highlighting effects
+   - Add custom tooltip showing formatted GDP values
 
-5. **Enable Country Labels**
+5. **Add Map-Marker Series (Population Bubbles)**
 
-   - Configure labels to display within geographic regions
-   - Choose an appropriate font size for world-scale visibility
+   - Define a map-marker series type for population bubbles
+   - Link to the same data using ISO3 identifiers
+   - Specify population field for bubble sizing
+   - Set maximum bubble size
+   - Add custom tooltip showing formatted population
 
-6. **Configure Interactive Highlighting**
+6. **Add Gradient Legend**
 
-   - Set up hover effects for geographic regions
-   - Adjust border and opacity for visual feedback
-
-7. **Add Gradient Legend**
-
-   - Enable a gradient legend showing the color scale
-   - Position it appropriately on the chart
+   - Enable a gradient legend for the color scale
+   - Position it on the chart (right or bottom)
    - Configure the gradient bar dimensions
 
-8. **Enable Map Zoom**
+7. **Enable Map Zoom**
    - Add zoom capability for exploring regions in detail
-
-## Documentation References
-
-- [AG Charts Map Series](https://ag-grid.com/charts/react/map-series/)
-- [AG Charts Map Shape](https://ag-grid.com/charts/react/map-shape-series/)
-- [AG Charts Topology](https://ag-grid.com/charts/react/map-topology/)
-- [AG Charts Gradient Legend](https://ag-grid.com/charts/react/gradient-legend/)
-- [AG Charts Zoom](https://ag-grid.com/charts/react/zoom/)
-
-## Success Criteria
-
-Your map should:
-
-- Display world map with country boundaries
-- Color countries by GDP (graduated color scale)
-- Show gradient legend with color-to-value mapping
-- Display country labels (ISO codes)
-- Highlight countries on hover with thicker border
-- Allow clicking to select countries
-- Enable zoom via scroll wheel
-- Enable pan via dragging
-- Correctly map data to countries via ISO3 codes
-- Show tooltips with country data on hover
-
-## Interaction Guide
-
-Users should be able to:
-
-1. **Hover**: See countries highlight with emphasized borders
-2. **Click**: Select/deselect countries
-3. **Zoom**: Use scroll wheel or pinch to zoom in/out
-4. **Pan**: Click and drag to move around when zoomed
-5. **Legend**: Understand the color-to-value mapping in gradient legend
-6. **Tooltips**: Hover to see exact GDP values and country names
-
-## Tips
-
-- The `'ag-charts-enterprise'` import is required for map features - must be at the top
-- Ensure ISO3 codes in your data exactly match those in the topology
-- The topology file is typically large (MB) - it's already provided and optimized
-- Color scale is automatic based on min/max values in your data
-- Missing data (countries not in your dataset) appear in a neutral color
-- Labels may overlap on small regions - font size and zoom help manage this
-- Gradient legend automatically calculates and displays the data range
-- Test zoom by scrolling and confirm smooth performance
-- Check browser console for any data matching errors if countries don't color
-- The `colorKey` must be a numeric field for gradient color mapping
-- For world maps, font size 8-9px works well for labels
-- Some island nations or small countries may not be visible without zoom
-
-## Understanding ISO3 Codes
-
-ISO 3166-1 alpha-3 codes are standard 3-letter country identifiers:
-
-- **USA** = United States
-- **GBR** = United Kingdom
-- **CAN** = Canada
-- **DEU** = Germany
-- **FRA** = France
-- **JPN** = Japan
-- **CHN** = China
-- **IND** = India
-- **BRA** = Brazil
-- **AUS** = Australia
-
-These codes provide a standardized way to link data to geographic shapes.
 
 ## Code Snippets
 
@@ -409,12 +394,14 @@ import 'ag-charts-enterprise';
 
 import { topology } from './topology.js';
 import { data } from './data.js';
+import { formatNumber } from './utils.js';
 ```
 
-### Complete Map-Shape Series
+### Complete Series Configuration
 
 ```typescript
 series: [
+  // Map-shape series for colored countries
   {
     type: 'map-shape',
     idKey: 'iso3',
@@ -431,8 +418,28 @@ series: [
         fillOpacity: 0.9,
       },
     },
+    tooltip: {
+      renderer: ({ datum }) => ({
+        data: [{ label: 'GDP', value: `$${formatNumber(datum.gdp_md)}` }],
+      }),
+    },
   },
-]
+  // Map-marker series for population bubbles
+  {
+    type: 'map-marker',
+    idKey: 'iso3',
+    topologyIdKey: 'iso3',
+    sizeKey: 'pop_est',
+    sizeName: 'Population',
+    maxSize: 30,
+    strokeWidth: 1,
+    tooltip: {
+      renderer: ({ datum }) => ({
+        data: [{ label: 'Population', value: formatNumber(datum.pop_est) }],
+      }),
+    },
+  },
+];
 ```
 
 ### Gradient Legend Configuration
@@ -440,10 +447,9 @@ series: [
 ```typescript
 gradientLegend: {
   enabled: true,
-  position: 'bottom',
+  position: 'right',
   gradient: {
     preferredLength: 400,
-    thickness: 12,
   },
 }
 ```
@@ -463,25 +469,18 @@ const chartOptions: AgChartOptions = {
   series: [
     {
       type: 'map-shape',
-      idKey: 'iso3',
-      topologyIdKey: 'iso3',
-      colorKey: 'gdp_md',
-      colorName: 'GDP per Capita ($)',
-      label: { enabled: true, fontSize: 9 },
-      highlight: {
-        highlightedItem: {
-          strokeWidth: 3,
-          fillOpacity: 0.9,
-        },
-      },
+      // ... shape series config with tooltip
+    },
+    {
+      type: 'map-marker',
+      // ... marker series config with tooltip
     },
   ],
   gradientLegend: {
     enabled: true,
-    position: 'bottom',
+    position: 'right',
     gradient: {
       preferredLength: 400,
-      thickness: 12,
     },
   },
   zoom: {
@@ -489,3 +488,73 @@ const chartOptions: AgChartOptions = {
   },
 };
 ```
+
+## Documentation References
+
+- [AG Charts Map Series](https://ag-grid.com/charts/react/map-series/)
+- [AG Charts Map Shape](https://ag-grid.com/charts/react/map-shape-series/)
+- [AG Charts Map Marker](https://ag-grid.com/charts/react/map-marker-series/)
+- [AG Charts Topology](https://ag-grid.com/charts/react/map-topology/)
+- [AG Charts Gradient Legend](https://ag-grid.com/charts/react/gradient-legend/)
+- [AG Charts Tooltips](https://ag-grid.com/charts/react/tooltips/)
+- [AG Charts Zoom](https://ag-grid.com/charts/react/zoom/)
+
+## Success Criteria
+
+Your map should:
+
+- Display world map with country boundaries
+- Color countries by GDP (gradient from low to high)
+- Show population bubbles sized by population
+- Display gradient legend with color scale on the right
+- Show country labels (ISO3 codes)
+- Highlight countries on hover with thicker border
+- Allow clicking to select countries
+- Show custom tooltips with formatted GDP and population values
+- Enable zoom via scroll wheel
+- Enable pan via dragging
+- Correctly map data to countries via ISO3 codes
+- Display both map-shape and map-marker series simultaneously
+
+## Interaction Guide
+
+Users should be able to:
+
+1. **Hover**: See countries highlight with thicker borders
+2. **Click**: Select/deselect countries
+3. **Zoom**: Use scroll wheel to zoom in/out
+4. **Pan**: Click and drag to move around when zoomed
+5. **Legend**: See color-to-value mapping in gradient
+6. **Tooltips**: Hover to see exact GDP values
+
+## Tips
+
+- The `'ag-charts-enterprise'` import is required for map features
+- Ensure ISO3 codes in data match those in topology
+- The topology file is typically large - it's already provided
+- You need TWO series: one `map-shape` for countries, one `map-marker` for bubbles
+- Color scale is automatic based on min/max values in data
+- Missing data (countries not in your dataset) appear in default color
+- Labels may overlap on small regions - font size helps manage this
+- Population bubbles are positioned at country centroids automatically
+- Use the `formatNumber` utility for consistent number formatting in tooltips
+- Gradient legend position `'right'` works well with map layouts
+- Test zoom by scrolling and confirm smooth performance
+- Check browser console for any data matching errors
+- The `colorKey` and `sizeKey` must be numeric fields
+- Map markers layer on top of the map shapes
+
+## Understanding ISO3 Codes
+
+ISO 3166-1 alpha-3 codes are standard 3-letter country codes:
+
+- USA = United States
+- GBR = United Kingdom
+- CAN = Canada
+- DEU = Germany
+- FRA = France
+- JPN = Japan
+- CHN = China
+- IND = India
+
+These codes link your data to the geographic shapes in the topology.
