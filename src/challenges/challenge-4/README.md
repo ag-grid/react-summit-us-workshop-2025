@@ -87,9 +87,6 @@ The navigator provides a miniature version of your chart for context and quick n
 ```typescript
 navigator: {
   enabled: true,
-  height: 50,  // Height of navigator panel
-  min: 0.5,    // Initial minimum (0-1, 0.5 = 50% of data)
-  max: 1.0,    // Initial maximum (0-1, 1.0 = 100% of data)
   miniChart: {
     enabled: true,  // Show mini version of main chart
   },
@@ -116,10 +113,6 @@ Crosshairs are cursor-following lines that help users read precise values:
   position: 'left',
   crosshair: {
     enabled: true,
-    snap: true,  // Snap to nearest data point
-    label: {
-      enabled: true,  // Show value label
-    },
   },
 }
 ```
@@ -128,7 +121,6 @@ Crosshairs provide:
 
 - Vertical and horizontal guide lines
 - Value labels showing exact coordinates
-- Snap-to-data for precise readings
 
 [Learn more about Crosshair in our documentation.](https://ag-grid.com/charts/react/crosshair/)
 
@@ -160,11 +152,11 @@ The data is provided in `data.js`:
 export const data = [
   {
     year: 154,
-    co2: 278.18
+    co2: 278.18,
   },
   {
     year: 155,
-    co2: 278.14
+    co2: 278.14,
   },
   // ... 1,843 data points total
 ];
@@ -296,7 +288,7 @@ axes: [
     title: { text: 'CO2 (ppm)' },
     crosshair: { enabled: true },
   },
-]
+];
 ```
 
 ### Navigator Configuration
@@ -321,7 +313,7 @@ series: [
     yKey: 'co2',
     yName: 'CO2 Concentration (ppm)',
   },
-]
+];
 ```
 
 ### Complete Chart Options Structure
