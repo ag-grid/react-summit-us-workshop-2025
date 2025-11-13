@@ -24,8 +24,8 @@ const challenges: ChallengeConfig[] = [
     subtitle:
       'Hint: Use the "series" property in the chart options to define multiple',
     component: MultiLineChart,
-    docsUrl: '#',
-    solutionUrl: '#',
+    solutionUrl:
+      'https://github.com/ag-grid/react-summit-us-workshop-2025/tree/challenge-1-solution',
   },
   {
     id: 2,
@@ -33,8 +33,8 @@ const challenges: ChallengeConfig[] = [
     subtitle:
       'Hint: Use the "series" property in the chart options to define multiple',
     component: PolarChart,
-    docsUrl: '#',
-    solutionUrl: '#',
+    solutionUrl:
+      'https://github.com/ag-grid/react-summit-us-workshop-2025/tree/challenge-2-solution',
   },
   {
     id: 3,
@@ -42,8 +42,8 @@ const challenges: ChallengeConfig[] = [
     subtitle:
       'Hint: Use the "series" property in the chart options to define multiple',
     component: CustomChartTheme,
-    docsUrl: '#',
-    solutionUrl: '#',
+    solutionUrl:
+      'https://github.com/ag-grid/react-summit-us-workshop-2025/tree/challenge-3-solution',
   },
   {
     id: 4,
@@ -51,8 +51,8 @@ const challenges: ChallengeConfig[] = [
     subtitle:
       'Hint: Use the "series" property in the chart options to define multiple',
     component: EnterpriseChart,
-    docsUrl: '#',
-    solutionUrl: '#',
+    solutionUrl:
+      'https://github.com/ag-grid/react-summit-us-workshop-2025/tree/challenge-4-solution',
   },
   {
     id: 5,
@@ -60,8 +60,8 @@ const challenges: ChallengeConfig[] = [
     subtitle:
       'Hint: Use the "series" property in the chart options to define multiple',
     component: MapChart,
-    docsUrl: '#',
-    solutionUrl: '#',
+    solutionUrl:
+      'https://github.com/ag-grid/react-summit-us-workshop-2025/tree/challenge-5-solution',
   },
   {
     id: 6,
@@ -69,8 +69,8 @@ const challenges: ChallengeConfig[] = [
     subtitle:
       'Hint: Use the "series" property in the chart options to define multiple',
     component: FinancialChart,
-    docsUrl: '#',
-    solutionUrl: '#',
+    solutionUrl:
+      'https://github.com/ag-grid/react-summit-us-workshop-2025/tree/challenge-6-solution',
   },
 ];
 
@@ -110,14 +110,6 @@ function App() {
               <ChartComponent />
             </div>
             <div className="button-row">
-              <button
-                className="primary-button"
-                onClick={() =>
-                  challenge.docsUrl && window.open(challenge.docsUrl, '_blank')
-                }
-              >
-                Docs
-              </button>
               <button
                 className="secondary-button"
                 onClick={() =>
