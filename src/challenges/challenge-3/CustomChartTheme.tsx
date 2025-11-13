@@ -9,8 +9,8 @@ export default function CustomChartTheme(): JSX.Element {
   // Custom Theme
   const chartTheme: AgChartTheme = {
     palette: {
-      fills: ['#5470C6', '#91CC75', '#FAC858', '#EE6666', '#73C0DE'],
-      strokes: ['#3B5BA5', '#6FA055', '#D4A037', '#C94545', '#5AA0BE'],
+      fills: ['#5470C6', '#91CC75', '#FAC858'],
+      strokes: ['#3B5BA5', '#6FA055', '#D4A037'],
     },
     overrides: {
       bar: {
@@ -20,19 +20,17 @@ export default function CustomChartTheme(): JSX.Element {
           shadow: {
             enabled: true,
             color: 'rgba(0, 0, 0, 0.15)',
-            xOffset: 2,
-            yOffset: 2,
-            blur: 5,
           },
         },
       },
       line: {
         series: {
-          strokeWidth: 3,
+          strokeWidth: 2,
           marker: {
             enabled: true,
-            size: 8,
-            strokeWidth: 2,
+            size: 4,
+            strokeWidth: 1,
+            shape: 'diamond',
           },
         },
       },
@@ -50,18 +48,10 @@ export default function CustomChartTheme(): JSX.Element {
             line: {
               stroke: '#6c757d',
             },
-            label: {
-              color: '#495057',
-              fontSize: 12,
-            },
           },
           number: {
             line: {
               stroke: '#6c757d',
-            },
-            label: {
-              color: '#495057',
-              fontSize: 12,
             },
             gridLine: {
               style: [
@@ -90,21 +80,18 @@ export default function CustomChartTheme(): JSX.Element {
         xKey: 'country',
         yKey: 'gdpPerCapita2023',
         yName: 'GDP per Capita 2023 ($)',
-        yAxis: 'gdp-axis',
       },
       {
         type: 'bar',
         xKey: 'country',
         yKey: 'co2Emissions2023',
         yName: 'CO2 Emissions 2023 (tonnes/capita)',
-        yAxis: 'co2-axis',
       },
       {
         type: 'bar',
         xKey: 'country',
         yKey: 'avgCO2EmissionsSince1920',
         yName: 'Avg CO2 Since 1920',
-        yAxis: 'co2-axis',
       },
     ],
     axes: [
@@ -119,7 +106,6 @@ export default function CustomChartTheme(): JSX.Element {
         type: 'number',
         position: 'left',
         keys: ['co2Emissions2023', 'avgCO2EmissionsSince1920'],
-        id: 'co2-axis',
         title: {
           text: 'CO2 Emissions (tonnes/capita)',
         },
@@ -128,7 +114,6 @@ export default function CustomChartTheme(): JSX.Element {
         type: 'number',
         position: 'right',
         keys: ['gdpPerCapita2023'],
-        id: 'gdp-axis',
         title: {
           text: 'GDP per Capita ($)',
         },
