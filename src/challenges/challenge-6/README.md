@@ -28,7 +28,7 @@ An S&P 500 historical chart featuring:
   - Comments marking specific dates and values
   - Horizontal and vertical reference lines
   - Text labels for important periods
-- Historical market events annotated (Dotcom Bubble, 9/11, GFC, COVID-19, etc.)
+- Historical market events annotated (GFC, COVID-19, etc.)
 - Interactive toolbar for adding more annotations
 - Professional financial styling
 
@@ -136,6 +136,7 @@ Callouts are arrow-based annotations that point from a text label to a specific 
 The arrow automatically draws from the text box to the data point, creating a visual connection.
 
 **Date handling**: Financial charts use time-series data, so X-axis values must be wrapped in a special format:
+
 - Use `__type: 'date'` to indicate it's a date value
 - Use `.getTime()` to convert JavaScript Date objects to numeric timestamps
 
@@ -334,7 +335,6 @@ theme: {
 
 The `MONTH` constant simplifies calculations. Since months vary in length, we use 30 days as an approximation.
 
-
 ## Data Structure
 
 The data is provided by the `getData()` function in `data.ts`:
@@ -355,7 +355,7 @@ interface FinancialDataPoint {
   { date: new Date('2000-01-04'), close: 1399.42 },
   { date: new Date('2000-01-05'), close: 1402.11 },
   // ... thousands more data points
-]
+];
 ```
 
 The `getData()` function returns S&P 500 historical price data from 1990 to present, providing over 30 years of market data including several major financial crises perfect for annotation practice.
@@ -574,7 +574,6 @@ export default function FinancialChart() {
   },
 }
 ```
-
 
 ## Documentation References
 
