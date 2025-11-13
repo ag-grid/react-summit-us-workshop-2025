@@ -341,7 +341,6 @@ interface IData {
    - Set `xKey` to country field
    - Set `yKey` to GDP per capita field
    - Set `yName` for legend label
-   - Set `yAxis: 'gdp-axis'` to bind to right axis
 
 9. **Add First Bar Series (Current CO2)**
 
@@ -349,7 +348,6 @@ interface IData {
    - Set `xKey` to country field
    - Set `yKey` to current CO2 emissions field
    - Set `yName` for legend label
-   - Set `yAxis: 'co2-axis'` to bind to left axis
 
 10. **Add Second Bar Series (Average CO2)**
 
@@ -357,7 +355,6 @@ interface IData {
     - Set `xKey` to country field
     - Set `yKey` to average CO2 emissions field
     - Set `yName` for legend label
-    - Set `yAxis: 'co2-axis'` to bind to left axis
 
 11. **Configure Bottom Axis (Categories)**
 
@@ -370,14 +367,12 @@ interface IData {
     - Type: `'number'`
     - Position: `'left'`
     - Set `keys` array with both CO2 field names
-    - Set `id` to `'co2-axis'`
     - Add title describing the metric and unit
 
 13. **Configure Right Axis (GDP)**
     - Type: `'number'`
     - Position: `'right'`
     - Set `keys` array with GDP field name
-    - Set `id` to `'gdp-axis'`
     - Add title describing the metric and unit
 
 ## Documentation References
