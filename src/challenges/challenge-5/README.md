@@ -292,54 +292,45 @@ The topology file contains GeoJSON data with country boundaries:
 
 1. **Import Required Modules**
 
-   - Import `AgCharts` from `'ag-charts-react'`
-   - Import `AgChartOptions` type from `'ag-charts-enterprise'`
-   - Import `'ag-charts-enterprise'` for map features (side effect import)
-   - Import `topology` from `'./topology.js'`
-   - Import `data` from `'./data.js'`
+   - Import the enterprise package for map features
+   - Import the chart component and types needed
+   - Import the topology data (GeoJSON) and country GDP data
 
-2. **Configure Chart Title and Subtitle**
+2. **Configure Chart Metadata**
 
-   - Add title describing the map (e.g., "World GDP per Capita")
-   - Add subtitle with instructions or context
+   - Add a descriptive title for the map visualization
+   - Include a subtitle with instructions or context for users
 
-3. **Add Data and Topology**
+3. **Provide Data and Geographic Shapes**
 
-   - Set `data` property to imported country data array
-   - Set `topology` property to imported GeoJSON topology
+   - Supply the country data array to the chart
+   - Supply the GeoJSON topology defining country boundaries
 
 4. **Configure Map-Shape Series**
 
-   - Set `type` to `'map-shape'`
-   - Set `idKey` to your data's identifier field (e.g., `'iso3'`)
-   - Set `topologyIdKey` to the topology's identifier field (e.g., `'iso3'`)
-   - Set `colorKey` to the numeric field for color mapping (e.g., `'gdp_md'`)
-   - Set `colorName` to a display name for the legend (e.g., `'GDP per Capita'`)
+   - Define a map-shape series type
+   - Link your data to the topology using matching identifier fields
+   - Specify which numeric field should drive the color scale
+   - Provide a display name for the legend
 
-5. **Enable Labels**
+5. **Enable Country Labels**
 
-   - Add `label` object to series
-   - Set `enabled: true`
-   - Set `fontSize` to appropriate size (8-10px recommended for world maps)
+   - Configure labels to display within geographic regions
+   - Choose an appropriate font size for world-scale visibility
 
-6. **Configure Highlighting**
+6. **Configure Interactive Highlighting**
 
-   - Add `highlight` object to series
-   - Configure `highlightedItem` properties:
-     - `strokeWidth` for emphasized border
-     - `fillOpacity` for hover opacity
+   - Set up hover effects for geographic regions
+   - Adjust border and opacity for visual feedback
 
 7. **Add Gradient Legend**
 
-   - Add `gradientLegend` object to chart options
-   - Set `enabled: true`
-   - Set `position` to `'bottom'`
-   - Configure `gradient`:
-     - `preferredLength` (400-600px works well)
-     - `thickness` (10-15px recommended)
+   - Enable a gradient legend showing the color scale
+   - Position it appropriately on the chart
+   - Configure the gradient bar dimensions
 
-8. **Enable Zoom**
-   - Add `zoom: { enabled: true }` to chart options
+8. **Enable Map Zoom**
+   - Add zoom capability for exploring regions in detail
 
 ## Documentation References
 
