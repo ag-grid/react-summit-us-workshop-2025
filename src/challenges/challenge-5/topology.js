@@ -2950,6 +2950,7 @@ export const topology = {
       },
       properties: {
         NAME_ENGL: 'Taiwan',
+        iso3: 'TWN',
       },
       id: 'TWN',
     },
