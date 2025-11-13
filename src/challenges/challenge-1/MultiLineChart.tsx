@@ -3,28 +3,101 @@ import { AgCharts } from 'ag-charts-react';
 import { data, averageEmissionsSince1800 } from './data.ts';
 // Types
 import type { JSX } from 'react';
-import type { ICountryData } from './data.ts';
 import type { AgChartOptions, AgLineSeriesOptions } from 'ag-charts-community';
 
 export default function MultiLineChart(): JSX.Element {
   // Chart Options: TODO
   const chartOptions: AgChartOptions = {
+    data: data,
     title: {
       text: 'Annual CO2 Emissions Per Capita Over Time',
     },
     subtitle: {
       text: 'Carbon dioxide (CO₂) emissions from burning fossil fuels and industrial processes.',
     },
-    series: data.map((countryData) => ({
-      data: countryData.data as ICountryData[],
-      type: 'line',
-      xKey: 'year',
-      yKey: 'emissionsPerCapita',
-      yName: countryData.country,
-      marker: {
-        enabled: false,
+    series: [
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'unitedStates',
+        title: 'USA',
+        marker: {
+          enabled: false,
+        },
       },
-    })) as AgLineSeriesOptions[],
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'unitedKingdom',
+        title: 'UK',
+        marker: {
+          enabled: false,
+        },
+      },
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'france',
+        title: 'France',
+        marker: {
+          enabled: false,
+        },
+      },
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'canada',
+        title: 'Canada',
+        marker: {
+          enabled: false,
+        },
+      },
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'china',
+        title: 'China',
+        marker: {
+          enabled: false,
+        },
+      },
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'india',
+        title: 'India',
+        marker: {
+          enabled: false,
+        },
+      },
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'italy',
+        title: 'Italy',
+        marker: {
+          enabled: false,
+        },
+      },
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'japan',
+        title: 'Japan',
+        marker: {
+          enabled: false,
+        },
+      },
+      {
+        type: 'line',
+        xKey: 'year',
+        yKey: 'germany',
+        title: 'Germany',
+        marker: {
+          enabled: false,
+        },
+      },
+    ],
     axes: [
       {
         type: 'number',
