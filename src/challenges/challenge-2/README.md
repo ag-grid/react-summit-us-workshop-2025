@@ -26,7 +26,6 @@ A dynamic polar chart displaying:
 - Click-to-select functionality (selected items turn red)
 - Custom tooltips with formatted GDP and population
 - Sector labels showing population values
-- Interactive legend
 
 ## Key Concepts
 
@@ -41,7 +40,7 @@ Polar charts use a **radius axis** and **angular axis** to plot data. Instead of
 
 This makes polar charts ideal for showing proportional data and part-to-whole relationships.
 
-![Polar Chart Example](./assets/polar-chart-example.png)
+![Polar Chart Example](../challenge-1/assets/polar-chart-example.png)
 
 ### 2. Pie Charts
 
@@ -181,7 +180,7 @@ itemStyler: (params) => {
 
   // Return undefined for default styling
   return undefined;
-}
+};
 ```
 
 This function is called for each item in the series. Return a style object to override defaults, or `undefined` to use default styles.
