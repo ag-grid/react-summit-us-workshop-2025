@@ -15,7 +15,6 @@ export default function PolarChart(): JSX.Element {
   const [data, setData] = useState<IData[]>(getData(selectedCountry));
   const [chartType, setChartType] = useState<'pie' | 'donut'>('donut');
 
-  // Util Method for Updating Dataset when a country is (de)selected
   const toggleDatum = (datum: IData | null) => {
     if (datum == null) {
       selectedCountry.clear();
@@ -28,11 +27,58 @@ export default function PolarChart(): JSX.Element {
   };
 
   const toggleChartType = () => {
-    // TODO
+    setChartType((prevType) => (prevType === 'pie' ? 'donut' : 'pie'));
   };
 
   // Chart Options: TODO
-  const chartOptions: AgChartOptions = {};
+  const chartOptions: AgChartOptions = {
+    data,
+    title: { text: 'Population & GDP by Country in 2023' },
+    series: [
+      {
+        type: chartType,
+        radiusKey: 'gdp2023',
+        legendItemKey: 'country',
+        calloutLabelKey: 'country',
+        angleKey: 'population',
+        sectorLabelKey: 'population',
+        sectorLabel: {
+          color: 'white',
+          fontSize: 8,
+          formatter: ({ value }) => `$${(value / 1000).toFixed(1)}K`,
+        },
+        tooltip: {
+          renderer: ({ datum }) => {
+            return {
+              title: `${datum.country} GDP`,
+              data: [
+                {
+                  label: 'GDP',
+                  value: formatGdp(datum['gdp2023']),
+                },
+                {
+                  label: 'Population',
+                  value: formatPopulation(datum['population']),
+                },
+              ],
+            };
+          },
+        },
+        itemStyler: (params) => {
+          if (params.datum.selected) {
+            return {
+              fill: 'red',
+            };
+          }
+        },
+        listeners: {
+          seriesNodeClick: (event) => {
+            toggleDatum(event.datum);
+          },
+        },
+      },
+    ],
+  };
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
