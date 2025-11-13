@@ -406,14 +406,11 @@ Your chart should display:
 - Start by creating the theme first, then build the chart configuration
 - Import `AgChartTheme` type from `'ag-charts-enterprise'`
 - The `keys` property on axes determines which series use that axis by matching `yKey` values
-- Axis IDs provide an alternative way to link series via the `yAxis` property
 - Theme overrides are applied globally but can be overridden at the series level if needed
-- Use the same axis ID in both the axis config and series config for explicit binding
 - Test the theme by checking if shadows and colors appear correctly in the browser
 - Ensure all three series are visible and properly scaled on their respective axes
 - The palette colors are assigned to series in order (first series gets first color, etc.)
 - RGBA colors like `rgba(0, 0, 0, 0.15)` provide transparency for subtle shadows
-- Label rotation helps prevent overlapping on the X-axis with many categories
 
 ## Code Snippets
 
