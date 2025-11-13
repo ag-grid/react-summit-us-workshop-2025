@@ -212,22 +212,41 @@ crossLines: [
 The data is provided in `data.ts`:
 
 ```typescript
-// Array of country data objects
-const data = [
+interface IData {
+  year: number;
+  canada: number;
+  china: number;
+  france: number;
+  germany: number;
+  india: number;
+  italy: number;
+  japan: number;
+  unitedKingdom: number;
+  unitedStates: number;
+}
+
+// Flat array where each entry is a year with all countries' emissions
+const data: IData[] = [
   {
-    country: 'Canada',
-    data: [
-      { year: 1800, annualCO2EmissionsPerCapita: 0.0 },
-      { year: 1801, annualCO2EmissionsPerCapita: 0.0 },
-      // ... more years
-    ],
+    year: 1800,
+    canada: 0.007328,
+    china: 0,
+    france: 0,
+    germany: 0.044171557,
+    india: 0,
+    italy: 0,
+    japan: 0,
+    unitedKingdom: 2.9153564,
+    unitedStates: 0.042136,
   },
-  // ... more countries
+  // ... more years (1800-2023)
 ];
 
 // Pre-calculated average
-const averageEmissionsSince1800 = 4.56;
+const averageEmissionsSince1800 = 7.2938483;
 ```
+
+Each row represents a single year with emissions data for all countries as properties.
 
 ## Implementation Steps
 
@@ -279,19 +298,53 @@ Your chart should display:
 
 ## Code Snippets
 
-### Creating Series from Data
+### Creating Series - Option 1: Manual Array
 
 ```typescript
-series: data.map((countryData) => ({
-  data: countryData.data as ICountryData[],
-  type: 'line',
-  xKey: 'year',
-  yKey: 'annualCO2EmissionsPerCapita',
-  yName: countryData.country,
-  marker: {
-    enabled: false,
+series: [
+  {
+    type: 'line',
+    data: data,
+    xKey: 'year',
+    yKey: 'canada',
+    yName: 'Canada',
+    marker: { enabled: false },
   },
-})) as AgLineSeriesOptions[];
+  {
+    type: 'line',
+    data: data,
+    xKey: 'year',
+    yKey: 'china',
+    yName: 'China',
+    marker: { enabled: false },
+  },
+  // ... repeat for other countries
+];
+```
+
+### Creating Series - Option 2: Using Map
+
+```typescript
+const countries = [
+  { key: 'canada', name: 'Canada' },
+  { key: 'china', name: 'China' },
+  { key: 'france', name: 'France' },
+  { key: 'germany', name: 'Germany' },
+  { key: 'india', name: 'India' },
+  { key: 'italy', name: 'Italy' },
+  { key: 'japan', name: 'Japan' },
+  { key: 'unitedKingdom', name: 'United Kingdom' },
+  { key: 'unitedStates', name: 'United States' },
+];
+
+series: countries.map((country) => ({
+  type: 'line',
+  data: data,
+  xKey: 'year',
+  yKey: country.key,
+  yName: country.name,
+  marker: { enabled: false },
+}));
 ```
 
 ### Axes Formats and Crosslines
