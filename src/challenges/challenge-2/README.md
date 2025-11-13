@@ -126,22 +126,19 @@ Tooltips display additional information when users hover over chart elements. By
 
 ```typescript
 tooltip: {
-  renderer: ({ datum }) => {
+  renderer: ({ datum, yName, xKey, yKey }) => {
     return {
-      title: datum.category,
+      heading: 'Clothing Production',
+      title: yName.toUpperCase(),
       data: [
         {
-          label: 'Revenue',
-          value: formatCurrency(datum.revenue),
-        },
-        {
-          label: 'Units Sold',
-          value: datum.units.toLocaleString(),
+          label: datum[xKey],
+          value: datum[yKey].toFixed(1),
         },
       ],
     };
   },
-}
+},
 ```
 
 The `datum` parameter contains the data point being hovered over.
@@ -153,21 +150,23 @@ The `datum` parameter contains the data point being hovered over.
 The `itemStyler` function allows you to conditionally style individual chart items based on their data:
 
 ```typescript
-itemStyler: (params) => {
-  // params.datum contains the data point
-  // params.highlighted indicates if item is hovered
+marker: {
+  itemStyler: (params) => {
+    // params.datum contains the data point
+    // params.highlighted indicates if item is hovered
+    console.log(params);
+    if (params.yValue > 3) {
+      return {
+        fill: 'red',
+        stroke: 'darkred',
+        strokeWidth: 2,
+      };
+    }
 
-  if (params.datum.value > 1000) {
-    return {
-      fill: 'red',
-      stroke: 'darkred',
-      strokeWidth: 2,
-    };
-  }
-
-  // Return undefined for default styling
-  return undefined;
-};
+    // Return undefined for default styling
+    return undefined;
+  },
+},
 ```
 
 This function is called for each item in the series. Return a style object to override defaults, or `undefined` to use default styles.
