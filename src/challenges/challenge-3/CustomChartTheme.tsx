@@ -14,22 +14,12 @@ export default function CustomChartTheme(): JSX.Element {
     },
     series: [
       // TODO: Show a line chart for GDP per capita
-      {
-        type: 'line',
-      },
       // TODO: Show a bar chart for CO2 emissions in 2023
-      {
-        type: 'bar',
-      },
       // TODO: Show a bar chart for average CO2 emissions since 1920
-      {
-        type: 'bar',
-      },
     ],
-    // TODO
+    // TODO: Custom Theme
     theme: {},
-    // TODO
-    axes: [],
+    // TODO: Configure left/right axes
   };
 
   return (
