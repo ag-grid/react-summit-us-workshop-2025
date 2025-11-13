@@ -59,12 +59,18 @@ const myTheme: AgChartTheme = {
   },
   overrides: {
     // Series-specific styling
-    line: { /* line series style */ },
-    bar: { /* bar series style */ },
+    line: {
+      /* line series style */
+    },
+    bar: {
+      /* bar series style */
+    },
 
     // Common styling for all charts
-    common: { /* shared settings */ }
-  }
+    common: {
+      /* shared settings */
+    },
+  },
 };
 ```
 
@@ -208,7 +214,7 @@ series: [
     xKey: 'month',
     yKey: 'humidity',
   },
-]
+];
 ```
 
 This creates a chart with three different visual representations of data, making it easy to compare different metrics.
@@ -228,24 +234,21 @@ axes: [
   {
     type: 'number',
     position: 'left',
-    keys: ['temperature', 'humidity'],  // Series that use this axis
-    id: 'temp-axis',  // Unique identifier
+    keys: ['temperature', 'humidity'], // Series that use this axis
     title: { text: 'Temperature (°C)' },
   },
   {
     type: 'number',
     position: 'right',
-    keys: ['rainfall'],  // Different series
-    id: 'rain-axis',  // Different identifier
+    keys: ['rainfall'], // Different series
     title: { text: 'Rainfall (mm)' },
   },
-]
+];
 ```
 
 **Key points**:
 
 - `keys`: Array of `yKey` values that should use this axis
-- `id`: Unique identifier for the axis
 - Each axis can have its own position, scale, and formatting
 
 You can also explicitly bind a series to an axis:
@@ -256,12 +259,12 @@ series: [
     type: 'line',
     xKey: 'month',
     yKey: 'temperature',
-    yAxis: 'temp-axis',  // Links to axis ID
+    yAxis: 'temp-axis', // Links to axis ID
   },
-]
+];
 ```
 
-[Learn more about Multiple Axes in our documentation.](https://ag-grid.com/charts/react/axes-multiple/)
+[Learn more about Multiple Axes in our documentation.](https://ag-grid.com/charts/react/axes-secondary/)
 
 ## Data Structure
 
@@ -297,45 +300,29 @@ interface IData {
 1. **Define Theme Object**
 
    - Create `chartTheme` constant with type `AgChartTheme`
-   - Import the type from `'ag-charts-enterprise'`
 
 2. **Configure Palette**
 
-   - Add `palette` object with `fills` array (5 colors recommended)
+   - Add `palette` object with `fills` array (3 colors recommended)
    - Add matching `strokes` array with complementary border colors
    - Strokes should typically be darker versions of fills
 
 3. **Add Bar Series Overrides**
 
    - Create `overrides.bar.series` object
-   - Set `strokeWidth` (e.g., 2)
-   - Set `fillOpacity` (e.g., 0.9 for slight transparency)
-   - Configure `shadow` object:
-     - `enabled: true`
-     - `color`: RGBA value with transparency
-     - `xOffset` and `yOffset` for shadow position
-     - `blur` for shadow softness
+   - Set stroke and fill values
+   - Configure `shadow` object
 
 4. **Add Line Series Overrides**
 
    - Create `overrides.line.series` object
-   - Set `strokeWidth` (e.g., 3 for prominent lines)
-   - Configure `marker` object:
-     - `enabled: true`
-     - `size` (e.g., 8 pixels)
-     - `strokeWidth` (e.g., 2 for marker borders)
+   - Set stroke values
+   - Configure `marker` object
 
 5. **Add Common Overrides**
 
    - Create `overrides.common` object
-   - Style `background.fill`
-   - Customize `title` (fontSize, fontWeight, color)
-   - Style `axes.category`:
-     - `line.stroke` for axis line color
-     - `label.color` and `label.fontSize`
-   - Style `axes.number`:
-     - Same as category axis
-     - Add `gridLine.style` with stroke and lineDash pattern
+   - Style backgrounds, titles and axes
 
 ### Part 2: Configure Chart with Mixed Series
 
@@ -451,9 +438,6 @@ const chartTheme: AgChartTheme = {
         shadow: {
           enabled: true,
           color: 'rgba(0, 0, 0, 0.15)',
-          xOffset: 2,
-          yOffset: 2,
-          blur: 5,
         },
       },
     },
@@ -477,11 +461,9 @@ const chartTheme: AgChartTheme = {
       axes: {
         category: {
           line: { stroke: '#6c757d' },
-          label: { color: '#495057', fontSize: 12 },
         },
         number: {
           line: { stroke: '#6c757d' },
-          label: { color: '#495057', fontSize: 12 },
           gridLine: {
             style: [{ stroke: '#dee2e6', lineDash: [4, 4] }],
           },
@@ -505,17 +487,15 @@ axes: [
     type: 'number',
     position: 'left',
     keys: ['co2Emissions2023', 'avgCO2EmissionsSince1920'],
-    id: 'co2-axis',
     title: { text: 'CO2 Emissions (tonnes/capita)' },
   },
   {
     type: 'number',
     position: 'right',
     keys: ['gdpPerCapita2023'],
-    id: 'gdp-axis',
     title: { text: 'GDP per Capita ($)' },
   },
-]
+];
 ```
 
 ### Mixed Series with Axis Binding
@@ -527,21 +507,18 @@ series: [
     xKey: 'country',
     yKey: 'gdpPerCapita2023',
     yName: 'GDP per Capita 2023 ($)',
-    yAxis: 'gdp-axis',  // Links to right axis
   },
   {
     type: 'bar',
     xKey: 'country',
     yKey: 'co2Emissions2023',
     yName: 'CO2 Emissions 2023 (tonnes/capita)',
-    yAxis: 'co2-axis',  // Links to left axis
   },
   {
     type: 'bar',
     xKey: 'country',
     yKey: 'avgCO2EmissionsSince1920',
     yName: 'Average CO2 Since 1920 (tonnes/capita)',
-    yAxis: 'co2-axis',  // Links to left axis
   },
-]
+];
 ```
