@@ -40,6 +40,12 @@ const chartOptions: AgChartOptions = {
 
 The `AgChartOptions` object controls everything within the chart, from series' and axes', to themes and events.
 
+Once defined, it can be passed to the `<AgCharts />` component, which will render the chart based on the options provided:
+
+```typescript
+return <AgCharts options={chartOptions} />;
+```
+
 ### 2. Providing Data
 
 All charts require a data source, which can be provided as either a callback or as raw data to the `chartOptions.data` property:
@@ -52,9 +58,9 @@ const chartOptions: AgChartOptions = {
 
 Once the data has been provided to the chart, we can start to access it from other properties to define our chart configuration.
 
-### 2. Series Configuration
+### 3. Series Configuration
 
-#### 2.1 Cartesian vs. Polar
+#### 3.1 Cartesian vs. Polar
 
 There are two main systems for plotting charts: Cartesian Coordinates, and Polar Coordinates.
 
@@ -68,7 +74,7 @@ Polar Coordinates use a radius axis, and plot points based on how far away, and 
 
 We'll cover both types of charts in this workshop, however, this first exercise focuses on Cartesian charts, more specifically a line chart.
 
-#### 2.2 Defining a Series
+#### 3.2 Defining a Series
 
 In AG Charts, all series types, e.g. line, bar, area, etc... are defined within the `chartOptions.series` property. The `series` property accepts an array of objects, where each object represents a series within the chart, which means we can have multiple series' types in a single chart.
 
@@ -105,7 +111,7 @@ series: [
 ];
 ```
 
-In this example, `month` and `temperature` are keys that exist within the dataset provided in the previous step. For this challenge, you'll need to refer to the `./data.ts` file to understand the data structure, and use the relevant keys to create the line series'.
+For this challenge, you'll need to refer to the `./data.ts` file to understand the data structure, and use the relevant keys to create the line series'.
 
 You can also provide additional properties to the series object to control specific features of that series. For example:
 
@@ -125,7 +131,7 @@ The `yName` property controls the string that is displayed to the user for the Y
 
 [Learn more about the different Line Series options available in our documentation.](https://www.ag-grid.com/charts/react/line-series/)
 
-### 3. Axes Configuration
+### 4. Axes Configuration
 
 Once the Series' have been configured, we can begin configuring and formatting the Axes.
 
@@ -164,7 +170,7 @@ axes: [
 
 In this example, we're using a callback function to dynamically format the label; in this case, rounding to 2 decimal places, and adding a currency symbol.
 
-### 4. Cross Lines
+### 5. Axes Features - Cross Lines
 
 Amongst lots of other axes features, we can also add cross lines, which are static lines displayed over the chart data, typically to indicate some sort of event.
 
@@ -225,32 +231,25 @@ const averageEmissionsSince1800 = 4.56;
 
 ## Implementation Steps
 
-1. **Import Required Types**
-
-   - Import `AgChartOptions` and `AgLineSeriesOptions` from `'ag-charts-community'`
-
-2. **Configure Title and Subtitle**
+1. **Configure Title and Subtitle**
 
    - Set appropriate title and subtitle text
 
-3. **Map Data to Series**
+2. **Map Data to Series**
 
    - Transform the `data` array into series configurations
    - Each country becomes a separate line series
-   - Use `map()` to create series from country data
+   - Hint: Use `map()` to create series from country data
 
-4. **Configure Left Axis (Y-axis)**
+3. **Configure Left Axis (Y-axis)**
 
-   - Set type to `'number'`
-   - Position on the `'left'`
+   - Format the y axis as a number
    - Add a formatter to display values with units (e.g., "10 t")
    - Add a horizontal cross line at `averageEmissionsSince1800`
 
-5. **Configure Bottom Axis (X-axis)**
-   - Set type to `'category'`
-   - Position on the `'bottom'`
+4. **Configure Bottom Axis (X-axis)**
+   - Format the x axis as a category
    - Add range cross lines for WW1 (1914-1918) and WW2 (1939-1945)
-   - Add a vertical line cross line for GFC (2009)
 
 ## Documentation References
 
@@ -267,7 +266,6 @@ Your chart should display:
 - Y-axis labels with "t" suffix (tonnes)
 - Horizontal dashed line showing average emissions
 - Shaded ranges for WW1 and WW2
-- Vertical line marking the GFC in 2009
 - Interactive legend showing all countries
 - Tooltips on hover showing exact values
 
