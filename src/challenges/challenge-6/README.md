@@ -290,74 +290,63 @@ The `getData()` function returns S&P 500 historical data from 1990 to present.
 
 1. **Import Required Modules**
 
-   - Import `AgFinancialCharts` from `'ag-charts-react'`
-   - Import `AgFinancialChartOptions` type from `'ag-charts-enterprise'`
-   - Import `'ag-charts-enterprise'` (side effect import)
-   - Import `getData` from `'./sp500.js'`
+   - Import the specialized financial charts component
+   - Import the enterprise package and necessary types
+   - Import the S&P 500 historical data
 
-2. **Load Data**
+2. **Set Up Chart Options**
 
-   - Call `getData()` to load S&P 500 historical data
+   - Create a financial chart options object
+   - Load the S&P 500 data into the chart
 
-3. **Create Options Object**
+3. **Configure Initial State with Annotations**
 
-   - Declare `options` variable with type `AgFinancialChartOptions`
-   - Set `data` property to the loaded data
+   - Define an initial state object to pre-populate annotations
+   - Create an annotations array to hold all event markers
 
-4. **Configure Initial State**
+4. **Add Annotations for Historical Market Events**
 
-   - Add `initialState` object to options
-   - Add `annotations` array within initial state
+   Create annotations marking significant events in market history. Consider using different annotation types for variety:
 
-5. **Add Annotations for Historical Events**
+   **Dotcom Bubble Peak (March 24, 2000)** - Price level: ~1527
 
-   For each major event, add appropriate annotation(s):
+   - Use a callout to point to the peak with explanatory text
+   - Apply bearish (red) styling
 
-   **Dotcom Bubble Peak (March 24, 2000)**
+   **9/11 Attacks (September 11, 2001)** - Price level: ~1092
 
-   - Callout annotation pointing to peak (~1527)
-   - Style with red theme (bearish)
-   - Arrow points to peak, text box to the left
+   - Mark the date with a comment annotation
+   - Add a vertical line for visual emphasis
 
-   **9/11 Attacks (September 11, 2001)**
+   **Global Financial Crisis (September 15, 2008)** - Price level: ~1251
 
-   - Comment annotation at the date (~1092)
-   - Vertical line marking the date
-   - Style with red theme
+   - Use a callout annotation to highlight the crash start
+   - Position text appropriately relative to the data point
 
-   **Global Financial Crisis (September 15, 2008)**
+   **Market Bottom - GFC (March 9, 2009)** - Price level: ~676
 
-   - Callout annotation pointing to start of crash (~1251)
-   - Style with red theme
-   - Arrow points to crash start, text box above
+   - Add a comment marker at the lowest point
+   - Include a horizontal reference line at this support level
+   - Use bullish (green) styling to indicate the recovery ahead
 
-   **Market Bottom - GFC (March 9, 2009)**
+   **COVID-19 Crash (March 16, 2020)** - Price level: ~2386
 
-   - Comment annotation at bottom (~676)
-   - Horizontal line at the same level
-   - Style with green theme (bullish - recovery ahead)
+   - Create a callout annotation for the crash
+   - Add a vertical line marking the bottom (March 23, 2020)
 
-   **COVID-19 Crash (March 16, 2020)**
+   **Recovery Rally (November 2020)** - Price level: ~3500
 
-   - Callout annotation pointing to crash (~2386)
-   - Vertical line at crash bottom (March 23, 2020)
-   - Style with red theme
+   - Use a simple text annotation to label the rally period
 
-   **Recovery Rally (November 2020)**
+   **2022 Bear Market (June 16, 2022)** - Price level: ~3666
 
-   - Text annotation labeling the recovery (~3500)
-   - Style neutral
+   - Add a comment marker at the low point
+   - Include a vertical line for reference
 
-   **2022 Bear Market (June 16, 2022)**
-
-   - Comment annotation at low point
-   - Vertical line for reference
-   - Style neutral or red
-
-6. **Render Component**
-   - Use `AgFinancialCharts` component
-   - Pass `options` prop
-   - Set `style` prop for dimensions (width: 100%, height: 100%)
+5. **Render the Financial Chart Component**
+   - Use the specialized financial charts component
+   - Pass your configured options
+   - Set appropriate dimensions for the container
 
 ## Documentation References
 
