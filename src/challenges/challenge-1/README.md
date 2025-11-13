@@ -60,7 +60,11 @@ There are two main systems for plotting charts: Cartesian Coordinates, and Polar
 
 Cartesian Coordinates use the x/y axes, and plot points based on how far along (x axis) and far up (y axis) a point is. This includes things like lines, bars, and bubble charts.
 
+![alt text](./assets/cartesian-chart-example.png)
+
 Polar Coordinates use a radius axis, and plot points based on how far away, and what angle they are. This includes things like Pie, Donut and Radar charts.
+
+![alt text](./assets/polar-chart-example.png)
 
 We'll cover both types of charts in this workshop, however, this first exercise focuses on Cartesian charts, more specifically a line chart.
 
@@ -234,6 +238,33 @@ const averageEmissionsSince1800 = 4.56;
    - Add range cross lines for WW1 (1914-1918) and WW2 (1939-1945)
    - Add a vertical line cross line for GFC (2009)
 
+## Documentation References
+
+- [AG Charts Line Series](https://charts.ag-grid.com/react/line-series/)
+- [AG Charts Axes](https://charts.ag-grid.com/react/axes/)
+- [AG Charts Cross Lines](https://charts.ag-grid.com/react/axes-cross-lines/)
+- [AG Charts Options Reference](https://charts.ag-grid.com/react/api/options/)
+
+## Success Criteria
+
+Your chart should display:
+
+- Multiple colored lines (one per country)
+- Y-axis labels with "t" suffix (tonnes)
+- Horizontal dashed line showing average emissions
+- Shaded ranges for WW1 and WW2
+- Vertical line marking the GFC in 2009
+- Interactive legend showing all countries
+- Tooltips on hover showing exact values
+
+## Tips
+
+- Start with a basic chart and add features incrementally
+- Use the browser console to debug any TypeScript errors
+- Cross lines are added to the axis configuration, not the series
+- The `lineDash` property uses an array pattern: `[dashLength, gapLength]`
+- Test your chart by hovering over lines to see tooltips
+
 ## Code Snippets
 
 ### Creating Series from Data
@@ -299,30 +330,3 @@ axes: [
   },
 ],
 ```
-
-## Documentation References
-
-- [AG Charts Line Series](https://charts.ag-grid.com/react/line-series/)
-- [AG Charts Axes](https://charts.ag-grid.com/react/axes/)
-- [AG Charts Cross Lines](https://charts.ag-grid.com/react/axes-cross-lines/)
-- [AG Charts Options Reference](https://charts.ag-grid.com/react/api/options/)
-
-## Success Criteria
-
-Your chart should display:
-
-- Multiple colored lines (one per country)
-- Y-axis labels with "t" suffix (tonnes)
-- Horizontal dashed line showing average emissions
-- Shaded ranges for WW1 and WW2
-- Vertical line marking the GFC in 2009
-- Interactive legend showing all countries
-- Tooltips on hover showing exact values
-
-## Tips
-
-- Start with a basic chart and add features incrementally
-- Use the browser console to debug any TypeScript errors
-- Cross lines are added to the axis configuration, not the series
-- The `lineDash` property uses an array pattern: `[dashLength, gapLength]`
-- Test your chart by hovering over lines to see tooltips
