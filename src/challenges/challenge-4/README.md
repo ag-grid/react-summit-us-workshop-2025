@@ -1,36 +1,31 @@
-# Challenge 4: Enterprise Features - High Performance Charts
+# Challenge 4: Enterprise Features - Interactive Charts
 
 ## Overview
 
-Implement an enterprise-grade chart with high-performance rendering, zoom functionality, and data navigation. This challenge showcases AG Charts Enterprise features for handling large datasets (1 million data points) with smooth interactions.
+Implement an enterprise-grade chart with zoom functionality, navigator, and context menu. This challenge showcases AG Charts Enterprise features for creating professional, interactive data visualizations with historical CO2 data.
 
 ## Learning Objectives
 
 - Work with AG Charts Enterprise features
-- Handle large datasets efficiently
 - Configure zoom and pan functionality
 - Implement navigator/minimap for data overview
-- Use ordinal-time axes for time-based data
 - Configure crosshair interactions
-- Optimize chart performance with animation settings
 - Implement context menu functionality
 
 ## Chart Type
 
-**High-Performance Line Chart** with 1 million data points
+Line Chart with Enterprise Features, including zooming, navigator, crosshair, and context menu.
 
 ## What You'll Build
 
-An enterprise-grade financial time series chart featuring:
+An enterprise-grade chart featuring:
 
-- Line chart rendering 1 million data points
+- Line chart displaying historical CO2 levels (year 154-1996)
 - Interactive zoom and pan (X-axis)
 - Navigator mini-chart for context
 - Crosshair on both axes
-- Ordinal-time axis with hierarchical date display
 - Context menu for chart interactions
 - Auto-scaling during zoom
-- Optimized rendering performance
 
 ## Key Concepts
 
@@ -39,7 +34,7 @@ An enterprise-grade financial time series chart featuring:
 AG Charts Enterprise extends the free Community version with advanced features designed for production applications:
 
 **Enterprise Features**:
-- High-performance rendering for massive datasets
+
 - Interactive zoom and pan
 - Navigator (minimap) for data context
 - Map charts with geospatial visualization
@@ -47,49 +42,19 @@ AG Charts Enterprise extends the free Community version with advanced features d
 - Advanced annotations
 - Context menus
 
-To use Enterprise features, import the enterprise package:
+To use Enterprise features, simply import the enterprise package:
 
 ```typescript
 import 'ag-charts-enterprise';
-import { AgCharts } from 'ag-charts-react';
-import type { AgCartesianAxisOptions } from 'ag-charts-enterprise';
 ```
 
 The import side effect registers all enterprise features automatically.
 
+You don't need an enterprise licence to install & test AG Charts Enterprise, but if you don't have a licence, you can't run in production, and a watermark + console error will appear.
+
 [Learn more about AG Charts Enterprise in our documentation.](https://ag-grid.com/charts/react/licensing/)
 
-### 2. Handling Large Datasets
-
-AG Charts can efficiently render millions of data points through:
-
-- **Optimized rendering**: Canvas-based rendering with intelligent update cycles
-- **Data decimation**: Automatic reduction of visible points when zoomed out
-- **Virtual rendering**: Only renders visible portions of the chart
-- **Efficient updates**: Incremental updates instead of full re-renders
-
-Best practices for large datasets:
-
-```typescript
-// Disable animations for better performance
-animation: { enabled: false }
-
-// Use time or number axes instead of category
-axes: [
-  { type: 'ordinal-time', position: 'bottom' },
-  { type: 'number', position: 'left' }
-]
-
-// Simplify markers
-series: [{
-  type: 'line',
-  marker: { enabled: false },  // Markers slow down rendering
-}]
-```
-
-[Learn more about Performance in our documentation.](https://ag-grid.com/charts/react/performance/)
-
-### 3. Zoom Configuration
+### 2. Zoom Configuration
 
 Zoom allows users to focus on specific data ranges by selecting regions to magnify:
 
@@ -106,6 +71,7 @@ zoom: {
 ```
 
 **Zoom interactions**:
+
 - **Select region**: Click and drag horizontally to zoom in
 - **Zoom out**: Double-click the chart
 - **Pan**: Drag the chart when zoomed in
@@ -114,7 +80,7 @@ zoom: {
 
 [Learn more about Zoom in our documentation.](https://ag-grid.com/charts/react/zoom/)
 
-### 4. Navigator (Minimap)
+### 3. Navigator (Minimap)
 
 The navigator provides a miniature version of your chart for context and quick navigation:
 
@@ -131,6 +97,7 @@ navigator: {
 ```
 
 The navigator appears at the bottom of the chart with:
+
 - A miniature version of your chart
 - A selection handle showing the current zoom region
 - Click-and-drag to pan through data
@@ -138,34 +105,7 @@ The navigator appears at the bottom of the chart with:
 
 [Learn more about Navigator in our documentation.](https://ag-grid.com/charts/react/navigator/)
 
-### 5. Ordinal-Time Axis
-
-The ordinal-time axis is optimized for time-series data with irregular intervals:
-
-```typescript
-{
-  type: 'ordinal-time',
-  position: 'bottom',
-  parentLevel: { enabled: true },  // Show hierarchical dates
-  crosshair: { enabled: true },
-}
-```
-
-**Benefits over regular time axes**:
-- **Irregular intervals**: Handles missing data (e.g., weekends in stock data)
-- **Hierarchical labels**: Shows both primary (days) and parent (months/years) labels
-- **Better performance**: Optimized for large time-series datasets
-- **No gaps**: Data points are evenly spaced regardless of actual time intervals
-
-**Parent Level**: Displays higher-level time periods above the main labels:
-```
-Jan     |     Feb     |     Mar
-1  5  10  15  20  25   1   5  10
-```
-
-[Learn more about Ordinal Time Axis in our documentation.](https://ag-grid.com/charts/react/axes-types/#ordinal-time)
-
-### 6. Crosshair
+### 4. Crosshair
 
 Crosshairs are cursor-following lines that help users read precise values:
 
@@ -185,36 +125,14 @@ Crosshairs are cursor-following lines that help users read precise values:
 ```
 
 Crosshairs provide:
+
 - Vertical and horizontal guide lines
 - Value labels showing exact coordinates
 - Snap-to-data for precise readings
-- Synchronized across multiple axes
 
 [Learn more about Crosshair in our documentation.](https://ag-grid.com/charts/react/crosshair/)
 
-### 7. Performance Optimization
-
-For charts with massive datasets, disable expensive features:
-
-```typescript
-const chartOptions: AgChartOptions = {
-  animation: { enabled: false },  // Animations slow down updates
-  series: [{
-    type: 'line',
-    marker: { enabled: false },  // Markers add rendering overhead
-    tooltip: { enabled: true },  // Tooltips are fine, they're lazy
-  }],
-};
-```
-
-**Performance tips**:
-- Disable animations for datasets over 10,000 points
-- Disable markers for datasets over 1,000 points
-- Use number or time axes instead of category axes
-- Consider data aggregation or sampling for extremely large datasets
-- Enable zoom to let users focus on smaller regions
-
-### 8. Context Menu
+### 5. Context Menu
 
 The context menu provides right-click functionality:
 
@@ -225,10 +143,10 @@ contextMenu: {
 ```
 
 Built-in menu options include:
+
 - Download chart as PNG
-- Download chart as JPG
-- Copy chart to clipboard
-- Print chart
+- Zoom
+- Pan
 
 You can also add custom menu items through the API.
 
@@ -236,88 +154,67 @@ You can also add custom menu items through the API.
 
 ## Data Structure
 
-The data generator creates time-series financial data:
+The data is provided in `data.js`:
 
-```typescript
-interface DataPoint {
-  timestamp: Date;   // Time point
-  close: number;     // Closing value
-}
-
-// Generated by getData(count)
-[
-  { timestamp: Date('2020-01-01'), close: 100.5 },
-  { timestamp: Date('2020-01-02'), close: 101.2 },
-  // ... million data points
-]
+```javascript
+export const data = [
+  {
+    year: 154,
+    co2: 278.18
+  },
+  {
+    year: 155,
+    co2: 278.14
+  },
+  // ... 1,843 data points total
+];
 ```
 
-The `getData(count)` function generates realistic financial data with trends and volatility.
+This dataset contains historical CO2 concentration measurements (in ppm) from year 154 to year 1996, providing nearly 2,000 years of atmospheric data.
 
 ## Implementation Steps
 
 1. **Import Enterprise Features**
 
-   - Add `import 'ag-charts-enterprise';` at the top of the file
-   - Import `AgCartesianAxisOptions` type from `'ag-charts-enterprise'`
+   - Import the enterprise package to enable advanced features
+   - Import the CO2 data from the data file
 
-2. **Generate Large Dataset**
+2. **Configure Chart Metadata**
 
-   - Call `getData(1e6)` to generate 1 million data points
-   - Store in a constant (e.g., `baseData`)
+   - Add a descriptive title about historical CO2 levels
+   - Include a subtitle explaining the data timeframe
 
-3. **Configure Chart Title**
+3. **Enable Zoom Functionality**
 
-   - Set title text indicating dataset size
-   - Use template literal: `` `Line Series with ${dataPoints} Data Points` ``
+   - Configure zoom to work on the horizontal axis only
+   - Set zoom to follow the pointer position
+   - Enable automatic Y-axis scaling to match the visible data range
 
-4. **Disable Animation**
+4. **Add Navigator Panel**
 
-   - Add `animation: { enabled: false }` to chart options
-   - This is critical for performance with large datasets
+   - Enable the navigator feature for overview and quick navigation
+   - Configure it to display a miniature version of the chart
 
-5. **Configure Zoom**
+5. **Create Line Series**
 
-   - Enable zoom with `zoom: { enabled: true }`
-   - Set `axes: 'x'` to zoom only horizontally
-   - Set `anchorPointX: 'pointer'` and `anchorPointY: 'pointer'`
-   - Enable auto-scaling with `autoScaling: { enabled: true }`
+   - Define a line series using the year and CO2 data
+   - Map the appropriate data fields to the X and Y axes
+   - Provide a meaningful name for the legend
 
-6. **Add Navigator**
+6. **Configure Axes**
 
-   - Enable navigator panel with `navigator: { enabled: true }`
-   - Enable mini-chart with `miniChart: { enabled: true }`
+   - Set up a numeric X-axis for years with an appropriate title
+   - Set up a numeric Y-axis for CO2 concentration with units
+   - Enable crosshairs on both axes for precise value reading
 
-7. **Configure Line Series**
-
-   - Type: `'line'`
-   - Set `data` to your generated dataset
-   - Set `xKey` to `'timestamp'`
-   - Set `yKey` to `'close'`
-   - Disable markers with `marker: { enabled: false }`
-
-8. **Configure Ordinal-Time Axis (Bottom)**
-
-   - Type: `'ordinal-time'`
-   - Position: `'bottom'`
-   - Enable parent level with `parentLevel: { enabled: true }`
-   - Enable crosshair with `crosshair: { enabled: true }`
-
-9. **Configure Number Axis (Left)**
-
-   - Type: `'number'`
-   - Position: `'left'`
-   - Enable crosshair with `crosshair: { enabled: true }`
-
-10. **Enable Context Menu**
-    - Add `contextMenu: { enabled: true }` to chart options
+7. **Enable Context Menu**
+   - Add context menu support for additional chart interactions
 
 ## Documentation References
 
 - [AG Charts Enterprise](https://ag-grid.com/charts/react/licensing/)
 - [AG Charts Zoom](https://ag-grid.com/charts/react/zoom/)
 - [AG Charts Navigator](https://ag-grid.com/charts/react/navigator/)
-- [AG Charts Ordinal Time Axis](https://ag-grid.com/charts/react/axes-types/#ordinal-time)
 - [AG Charts Crosshair](https://ag-grid.com/charts/react/crosshair/)
 - [AG Charts Context Menu](https://ag-grid.com/charts/react/context-menu/)
 - [AG Charts Performance](https://ag-grid.com/charts/react/performance/)
@@ -326,16 +223,15 @@ The `getData(count)` function generates realistic financial data with trends and
 
 Your chart should:
 
-- Render smoothly with 1 million data points (no lag)
-- Display line chart with time-series financial data
+- Display line chart with historical CO2 data (year 154-1996)
 - Show navigator panel at bottom with mini-chart representation
 - Allow click-and-drag horizontal zooming on the main chart
 - Show crosshair lines on both axes when hovering
-- Display hierarchical date labels (e.g., day numbers with month/year above)
 - Auto-adjust Y-axis scale when zoomed to show relevant range
-- Show context menu on right-click with download/copy options
-- Perform smoothly during pan and zoom without stuttering
+- Show context menu on right-click with zoom and download options
+- Perform smoothly during pan and zoom
 - Display current zoom selection in the navigator panel
+- Show year values on X-axis and CO2 concentration on Y-axis
 
 ## Interaction Guide
 
@@ -351,16 +247,13 @@ Users should be able to:
 ## Tips
 
 - The `'ag-charts-enterprise'` import must come before any other AG Charts imports
-- Disabling animation is crucial - without it, the chart will be very slow with 1M points
-- The `ordinal-time` axis is specifically optimized for time-series data
 - The navigator mini-chart automatically matches your main series configuration
 - `autoScaling` ensures the Y-axis stays relevant when zoomed in
-- Use `slice()` on your data array if you want to work with a subset (e.g., `baseData.slice(-1e5)` for last 100k points)
 - Test zoom by dragging horizontally - vertical dragging won't work with `axes: 'x'`
-- The parent level shows larger time periods (months/years) above day labels
 - Context menu appears on right-click and provides built-in export functionality
-- Monitor browser DevTools Performance tab to verify smooth 60fps rendering
-- If performance is poor, check that animation is disabled and markers are off
+- The chart should perform smoothly with this dataset size (1,843 points)
+- Use number axes for both X and Y since we have numeric year and CO2 values
+- The crosshair helps users see precise values when hovering over the chart
 
 ## Code Snippets
 
@@ -369,10 +262,8 @@ Users should be able to:
 ```typescript
 import 'ag-charts-enterprise';
 import { AgCharts } from 'ag-charts-react';
-import type { AgChartOptions, AgCartesianAxisOptions } from 'ag-charts-enterprise';
-import { getData } from './data.ts';
-
-const baseData = getData(1e6);  // Generate 1 million points
+import type { AgChartOptions } from 'ag-charts-enterprise';
+import { data } from './data.js';
 ```
 
 ### Complete Zoom Configuration
@@ -389,24 +280,23 @@ zoom: {
 }
 ```
 
-### Ordinal-Time Axis with Crosshair
+### Axes Configuration with Crosshair
 
 ```typescript
-const timeAxes: AgCartesianAxisOptions[] = [
+axes: [
+  {
+    type: 'number',
+    position: 'bottom',
+    title: { text: 'Year' },
+    crosshair: { enabled: true },
+  },
   {
     type: 'number',
     position: 'left',
-    crosshair: {
-      enabled: true,
-    },
-  },
-  {
-    type: 'ordinal-time',
-    position: 'bottom',
-    parentLevel: { enabled: true },  // Shows hierarchical dates
+    title: { text: 'CO2 (ppm)' },
     crosshair: { enabled: true },
   },
-];
+]
 ```
 
 ### Navigator Configuration
@@ -420,31 +310,60 @@ navigator: {
 }
 ```
 
-### Performance-Optimized Series
+### Line Series Configuration
 
 ```typescript
-series: [{
-  type: 'line',
-  data: baseData,
-  xKey: 'timestamp',
-  yKey: 'close',
-  marker: {
-    enabled: false,  // Critical for performance
+series: [
+  {
+    type: 'line',
+    data: data,
+    xKey: 'year',
+    yKey: 'co2',
+    yName: 'CO2 Concentration (ppm)',
   },
-}]
+]
 ```
 
 ### Complete Chart Options Structure
 
 ```typescript
 const chartOptions: AgChartOptions = {
-  data: baseData,
-  title: { text: 'Line Series with 1 Million Data Points' },
-  animation: { enabled: false },  // Critical for performance
-  zoom: { /* zoom config */ },
-  navigator: { /* navigator config */ },
-  series: [{ /* series config */ }],
-  axes: [/* axes config */],
+  title: { text: 'Historical CO2 Levels' },
+  subtitle: { text: 'Atmospheric CO2 concentration from year 154 to 1996' },
+  data: data,
+  zoom: {
+    enabled: true,
+    axes: 'x',
+    anchorPointX: 'pointer',
+    anchorPointY: 'pointer',
+    autoScaling: { enabled: true },
+  },
+  navigator: {
+    enabled: true,
+    miniChart: { enabled: true },
+  },
+  series: [
+    {
+      type: 'line',
+      xKey: 'year',
+      yKey: 'co2',
+      yName: 'CO2 Concentration (ppm)',
+    },
+  ],
+  axes: [
+    {
+      type: 'number',
+      position: 'bottom',
+      title: { text: 'Year' },
+      crosshair: { enabled: true },
+    },
+    {
+      type: 'number',
+      position: 'left',
+      title: { text: 'CO2 (ppm)' },
+      crosshair: { enabled: true },
+    },
+  ],
   contextMenu: { enabled: true },
 };
 ```
