@@ -75,11 +75,25 @@ In AG Charts, all series types, e.g. line, bar, area, etc... are defined within 
 Each Cartesian Series' object requires:
 
 - `type`: Chart type (e.g., `'line'`, `'bar'`, `'area'`)
-- `data`: Array of data points
 - `xKey`: Property name for x-axis values
 - `yKey`: Property name for y-axis values
 
-For example, to create a simple line chart that shows the temperature by each month, we set the following values:
+For example, to create a simple line chart based on data that shows the temperature by each month:
+
+```json
+[
+  {
+    "month": "january",
+    "temperature": 3.04
+  },
+  {
+    "month": "february",
+    "temperature": 2.17
+  }
+]
+```
+
+We set the following values on the `series` property:
 
 ```typescript
 series: [
