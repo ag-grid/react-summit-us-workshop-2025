@@ -1,7 +1,7 @@
 // Imports
 import { useState } from 'react';
 import { AgCharts } from 'ag-charts-react';
-import { selectedCountries, getData } from './data.ts';
+import { getData } from './data.ts';
 import ChartTypeToggle from './ChartTypeToggle.tsx';
 // Types
 import type { JSX } from 'react';
@@ -11,18 +11,19 @@ import type { IData } from './data.ts';
 import { formatGdp, formatPopulation } from './utils.ts';
 
 export default function PolarChart(): JSX.Element {
-  const [data, setData] = useState<IData[]>(getData());
+  const selectedCountry = new Set<string>();
+  const [data, setData] = useState<IData[]>(getData(selectedCountry));
   const [chartType, setChartType] = useState<'pie' | 'donut'>('donut');
 
   const toggleDatum = (datum: IData | null) => {
     if (datum == null) {
-      selectedCountries.clear();
-    } else if (selectedCountries.has(datum.country)) {
-      selectedCountries.delete(datum.country);
+      selectedCountry.clear();
+    } else if (selectedCountry.has(datum.country)) {
+      selectedCountry.delete(datum.country);
     } else {
-      selectedCountries.add(datum.country);
+      selectedCountry.add(datum.country);
     }
-    setData(getData());
+    setData(getData(selectedCountry));
   };
 
   const toggleChartType = () => {
