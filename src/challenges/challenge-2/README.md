@@ -95,7 +95,7 @@ series: [
 ];
 ```
 
-This creates segments with variable radii, where larger values extend further from the center.
+This creates segments with variable radii, where larger values extend further from the center. This is also known as a [Rose chart](https://www.ag-grid.com/charts/react/pie-series/#variable-sector-radius).
 
 [Learn more about Pie Series options in our documentation.](https://ag-grid.com/charts/react/pie-series/)
 
@@ -123,19 +123,6 @@ When `chartType` changes via `setChartType()`, React re-renders the component an
 ### 5. Custom Tooltips
 
 Tooltips display additional information when users hover over chart elements. By default, AG Charts provides basic tooltips, but you can customize them with a `renderer` function:
-
-```typescript
-tooltip: {
-  renderer: ({ datum }) => {
-    return {
-      title: `${datum.productName}`,
-      content: `Sales: $${datum.sales.toLocaleString()}`,
-    };
-  },
-}
-```
-
-For more structured tooltips, return a `data` array:
 
 ```typescript
 tooltip: {
