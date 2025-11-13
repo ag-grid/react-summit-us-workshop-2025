@@ -33,15 +33,14 @@ export default function PolarChart(): JSX.Element {
   // Chart Options: TODO
   const chartOptions: AgChartOptions = {
     data,
-    title: { text: 'GDP by Country in 2023' },
-    subtitle: { text: 'Source: International Monetary Fund' },
+    title: { text: 'Population & GDP by Country in 2023' },
     series: [
       {
         type: chartType,
-        angleKey: 'population',
         radiusKey: 'gdp2023',
         legendItemKey: 'country',
         calloutLabelKey: 'country',
+        angleKey: 'population',
         sectorLabelKey: 'population',
         sectorLabel: {
           color: 'white',
