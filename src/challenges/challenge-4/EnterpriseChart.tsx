@@ -1,6 +1,7 @@
 import { AgCharts } from 'ag-charts-react';
-import { data } from './data.js';
+import { data } from './data.ts';
 import 'ag-charts-enterprise';
+import type { IData } from './data.ts';
 import type { AgChartOptions } from 'ag-charts-enterprise';
 
 export default function EnterpriseChart() {
