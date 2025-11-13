@@ -27,7 +27,7 @@ This workshop takes you on a journey through AG Charts capabilities, from fundam
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/ag-grid/react-summit-us-workshop-2025.git
 cd react-summit-us-workshop-2025
 
 # Install dependencies
